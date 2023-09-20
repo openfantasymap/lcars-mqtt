@@ -1,0 +1,31 @@
+{
+    "type":"display",
+    "layout": "base",
+    "title": "SCI",
+    "form": "lside",
+    "structure": {
+        "sidebar": [
+            {"type":"button", "height":1, "target": {"type": "tab", "tab": "main", "label": "Main"}},
+            {"type":"button", "height":2, "target": {"type": "tab", "tab": "lrsensor", "label": "LR Sensors"}},
+            {"type":"button", "height":2, "target": {"type": "tab", "tab": "lrsensor", "label": "SR Sensors"}}
+        ],
+        "content": {
+            "main": {
+                "type": "column", 
+                "content" :[
+                    {
+                        "type": "row", 
+                        "content": [
+                            {"type": "nav", "emit": "nav/direction"}]}
+                ]
+            }
+        }
+    },
+    "sources": [
+        "sensors/lrsensors",
+        "sensors/srsensors",
+        "astrometrics",
+        "stellarcartography"
+    ],
+    "footer": "NCC-1701-G"
+}
