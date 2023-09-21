@@ -8,7 +8,7 @@ import { StationComponent } from './station/station.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { InterfaceComponent } from './interface/interface.component';
 import { ButtonComponent } from './base/button/button.component';
-import { NavComponent } from './nav/nav.component';
+import { NavComponent } from './base/nav/nav.component';
 import { WarpcoreComponent } from './base/warpcore/warpcore.component';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {

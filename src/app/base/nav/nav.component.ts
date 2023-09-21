@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { ConnectorService } from '../connector.service';
-import { CommandComponentInterface } from '../component-interface';
+import { ConnectorService } from '../../connector.service';
+import { CommandComponentInterface } from '../../component-interface';
 
 @Component({
   selector: 'lcars-nav',
