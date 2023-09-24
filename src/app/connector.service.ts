@@ -12,6 +12,9 @@ import { Observable, map, of, share, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class ConnectorService {
+  shipCondition(arg0: any) {
+    this._mqttService.unsafePublish(this.room+"/global", JSON.stringify(arg0));
+  }
   sendSettings(settings: any) {
     this._mqttService.unsafePublish(this.room+"/settings", JSON.stringify(settings));
   }

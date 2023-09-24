@@ -53,7 +53,7 @@ export class MasterComponent implements OnInit {
   }
 
   shipStatus(status:string){
-
+    this.c.shipCondition({status:status});
   }
 
 }

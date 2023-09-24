@@ -6,7 +6,7 @@
 </div>
 
 <div *ngIf="active==='main'">
-    <table>
+    <table style="width:100%">
         <tbody>
             <tr><td>title</td><td><input [(ngModel)]="settings.title"></td></tr>
             <tr><td>footer</td><td><input [(ngModel)]="settings.footer"></td></tr>
@@ -17,11 +17,11 @@
             <tr><td>color tertiary</td><td><input [(ngModel)]="settings.style.tertiaryColor"></td></tr>
         </tbody>
     </table>
-    <button (click)="settings.style.mainColor='#defe33';">DIS</button>
-    <button (click)="settings.style.mainColor='#cafeba';">TOS</button>
-    <button (click)="settings.style.mainColor='#adda67';">TNG</button>
-    <button (click)="settings.style.mainColor='#cefe44';">VOY</button>
-    <button (click)="settings.style.mainColor='#fafafa';">PIC</button>
+    <button (click)="settings.style = {mainColor:'#cefe44', secondaryColor:'#dde', tertiaryColor:'#ffa'};">DIS</button>
+    <button (click)="settings.style = {mainColor:'#ba5', secondaryColor:'#b41', tertiaryColor:'#821'};">TOS</button>
+    <button (click)="settings.style = {mainColor:'#fc6', secondaryColor:'#99f', tertiaryColor:'#008'};">TNG</button>
+    <button (click)="settings.style = {mainColor:'#cefe44', secondaryColor:'#dde', tertiaryColor:'#ffa'};">VOY</button>
+    <button (click)="settings.style = {mainColor:'#cefe44', secondaryColor:'#dde', tertiaryColor:'#ffa'};">PIC</button>
     <br>
     <button (click)="sync()">save</button>
     <div>{{settings|json}}</div>
@@ -39,7 +39,9 @@
 </div>
 
 <div *ngIf="active==='ship'">
-    <div *ngFor="let s in cvs">
-        <span>{{s}}</span>: <span>{{cvs[s]}}</span>
-    </div>
+    <table style="width:100%">
+        <tr *ngFor="let s in cvs">
+            <td>{{s}}</td>: <td>{{cvs[s]}}</td>
+        </tr>
+    </table>
 </div>
