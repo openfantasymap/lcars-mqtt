@@ -19,7 +19,6 @@
 
         <!-- FILLER -->
         <div class="lcars-bar fill lcars-tan-bg lcars-u-1"></div>
-
         <div (click)="do(c.target)" *ngFor="let c of configuration.structure.sidebar" class="lcars-element button lcars-golden-tanoi-bg lcars-u-1-{{c.height}}">
             {{c.target.label}}
         </div>
@@ -32,7 +31,10 @@
         <!-- ELBOW -->
         <div class="lcars-elbow left-top lcars-tan-bg"></div>
         <!-- BAR -->
-        <div class="lcars-bar horizontal both-divider lcars-tan-bg bottom"></div>
+        <!-- BAR WITH TITLE -->
+        <div class="lcars-bar horizontal lcars-tan-bg bottom">
+            <div class="lcars-title left">{{footer}}</div>
+        </div>
         <!-- ROUNDED EDGE -->
         <div class="lcars-bar horizontal right-end left-divider lcars-tan-bg bottom"></div>
     </div>
@@ -40,10 +42,9 @@
     <div id="container">
         <ng-container *ngFor="let r of configuration.structure.content|keyvalue">
             <ng-container *ngIf="active === r.key">
-                {{r.value|json}}
+                <lcars-container [configuration]="r.value"></lcars-container>
             </ng-container>
         </ng-container >
-        <lcars-nav></lcars-nav>
     </div>
     
 </div>

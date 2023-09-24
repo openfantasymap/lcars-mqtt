@@ -10,6 +10,19 @@ import { InterfaceComponent } from './interface/interface.component';
 import { ButtonComponent } from './base/button/button.component';
 import { NavComponent } from './base/nav/nav.component';
 import { WarpcoreComponent } from './base/warpcore/warpcore.component';
+import { ChromeComponent } from './base/chrome/chrome.component';
+import { ConnectorService } from './connector.service';
+import { ContainerComponent } from './base/container/container.component';
+import { RowComponent } from './base/row/row.component';
+import { ColumnComponent } from './base/column/column.component';
+import { TransporterbufferComponent } from './base/transporterbuffer/transporterbuffer.component';
+import { ToggleComponent } from './base/toggle/toggle.component';
+import { StellarComponent } from './base/stellar/stellar.component';
+import { VsliderComponent } from './base/vslider/vslider.component';
+import { HsliderComponent } from './base/hslider/hslider.component';
+import { PersonnelComponent } from './base/personnel/personnel.component';
+import { MasterComponent } from './master/master.component';
+import { FormsModule } from '@angular/forms';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'mqtt.fantasymaps.org',
@@ -26,16 +39,29 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     InterfaceComponent,
     ButtonComponent,
     NavComponent,
-    WarpcoreComponent
+    WarpcoreComponent,
+    ChromeComponent,
+    ContainerComponent,
+    RowComponent,
+    ColumnComponent,
+    TransporterbufferComponent,
+    ToggleComponent,
+    StellarComponent,
+    VsliderComponent,
+    HsliderComponent,
+    PersonnelComponent,
+    MasterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent],
   schemas:[
     NO_ERRORS_SCHEMA

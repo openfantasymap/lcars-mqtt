@@ -9,6 +9,7 @@ import { ConnectorService } from '../connector.service';
 export class InterfaceComponent implements OnInit {
 
   @Input() title: string|undefined = "LCARS";
+  @Input() footer: string|undefined = "NCC-1701-D"
   @Input() configuration: any;
 
   active:string = "main";

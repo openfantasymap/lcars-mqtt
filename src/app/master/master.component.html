@@ -1,0 +1,45 @@
+<div class="lcars-bar horizontal">
+    <div class="lcars-title left" [ngClass]="{'active':active==='main'}" (click)="active='main'">MAIN</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='ship'}" (click)="active='shipform'">SHIP</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='ship'}" (click)="active='ship'">IO</div>
+    <div class="lcars-title right">LCARS</div>
+</div>
+
+<div *ngIf="active==='main'">
+    <table>
+        <tbody>
+            <tr><td>title</td><td><input [(ngModel)]="settings.title"></td></tr>
+            <tr><td>footer</td><td><input [(ngModel)]="settings.footer"></td></tr>
+        </tbody>
+        <tbody>
+            <tr><td>color main</td><td><input [(ngModel)]="settings.style.mainColor"></td></tr>
+            <tr><td>color secondary</td><td><input [(ngModel)]="settings.style.secondaryColor"></td></tr>
+            <tr><td>color tertiary</td><td><input [(ngModel)]="settings.style.tertiaryColor"></td></tr>
+        </tbody>
+    </table>
+    <button (click)="settings.style.mainColor='#defe33';">DIS</button>
+    <button (click)="settings.style.mainColor='#cafeba';">TOS</button>
+    <button (click)="settings.style.mainColor='#adda67';">TNG</button>
+    <button (click)="settings.style.mainColor='#cefe44';">VOY</button>
+    <button (click)="settings.style.mainColor='#fafafa';">PIC</button>
+    <br>
+    <button (click)="sync()">save</button>
+    <div>{{settings|json}}</div>
+</div>
+
+<div *ngIf="active==='shipform'">
+    <button (click)="shipStatus('default')">Default</button>
+    <button (click)="shipStatus('alert_yellow')">Yellow Alert</button>
+    <button (click)="shipStatus('alert_red')">Red Alert</button>
+    <button (click)="shipStatus('alert_black')">Black Alert</button>
+    <br>
+    <div *ngFor="let s of settings.ship|keyvalue">
+        <span>{{s.key}}</span><span>{{s.value}}</span>
+    </div>
+</div>
+
+<div *ngIf="active==='ship'">
+    <div *ngFor="let s in cvs">
+        <span>{{s}}</span>: <span>{{cvs[s]}}</span>
+    </div>
+</div>

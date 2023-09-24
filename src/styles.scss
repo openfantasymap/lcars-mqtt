@@ -13,6 +13,14 @@
         fill: var(--tertiary-color);
       }
 
+.button.button-inactive{
+  color: var(--main-color) !important;
+  background-color: #000 !important;
+  border-color: var(--main-color);
+  border-width: 2px;
+  border-style: solid;
+}
+
 html,
 body {
   font-family: "Antonio", "arial", monospace;
@@ -317,11 +325,11 @@ h6 {
   display: inline-block;
   font-size: 150%;
   height: 100%;
+  line-height: 19px;
 }
 .lcars-bar .lcars-title.right {
   float: right;
   margin-right: 0.833333333333335rem;
-  line-height: 19px;
 }
 .lcars-element {
   position: relative;
@@ -357,10 +365,13 @@ h6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
-.lcars-element.button {
+.lcars-element.button, .lcars-element.button.button-active {
   cursor: pointer;
   color: black;
   text-transform: uppercase;
+  border-color: var(--main-color);
+  border-width: 2px;
+  border-style: solid;
 }
 .lcars-element.button.button:active {
   background-color: #c69;

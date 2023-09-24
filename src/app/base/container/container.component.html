@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="configuration.type">
+    <div *ngSwitchCase="'row'" class="lcars-row"> 
+        <ng-container *ngFor="let c of configuration.content">
+            <lcars-container [configuration]="c"></lcars-container>
+        </ng-container>
+    </div>
+    <div *ngSwitchCase="'column'" class="lcars-column">
+        <ng-container *ngFor="let c of configuration.content">
+            <lcars-container [configuration]="c"></lcars-container>
+        </ng-container>
+    </div>
+
+    <lcars-nav *ngSwitchCase="'nav'"></lcars-nav>
+    <lcars-button *ngSwitchCase="'button'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-button>
+    <lcars-toggle *ngSwitchCase="'toggle'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-toggle>
+
+</ng-container>

@@ -16,7 +16,14 @@
                     {
                         "type": "row", 
                         "content": [
-                            {"type": "nav", "emit": "nav/direction"}]}
+                            {"type": "nav", "emit": "nav/direction"},
+                            {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},
+                            {"type": "button", "emit": "direct/toggle"},
+                            {"type": "button", "emit": "direct/toggle"}
+                            
+                        ]},
+                        {"type": "button", "emit": "direct/toggle"},
+                        {"type": "button", "emit": "direct/toggle"}
                 ]
             }
         }
@@ -25,7 +32,9 @@
         "sensors/lrsensors",
         "sensors/srsensors",
         "astrometrics",
-        "stellarcartography"
+        "stellarcartography",
+        "nav/direction",
+        "direct/toggle"
     ],
     "footer": "NCC-1701-G"
 }

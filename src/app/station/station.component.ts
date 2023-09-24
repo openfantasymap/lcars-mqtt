@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./station.component.scss']
 })
 export class StationComponent implements OnInit {
+  mode: string = "local";
 
   room: string|null = null;
   station: string|null = null;
@@ -23,6 +24,13 @@ export class StationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.c.setMode(this.mode);
+    this.c.settingsChange.subscribe(data=>{
+      this.settings=data;
+    });
+    this.c.stationChange.subscribe(data=>{
+      this.configuration = data;
+    })
     this.ar.paramMap.subscribe(d=>{
       this.room = d.get('room');
       this.station = d.get('station');
@@ -35,9 +43,6 @@ export class StationComponent implements OnInit {
         this.c.setStation(this.station);
         this.c.setupStation();
       }
-    });
-    this.c.settingsChange.subscribe(data=>{
-      this.settings=data;
     });
   }
 }

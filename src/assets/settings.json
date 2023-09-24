@@ -1,0 +1,21 @@
+{
+    "title": "NCC-1701-G",
+    "footer": "USS Enterprise",
+    "style": {
+        "mainColor": "#ddd",
+        "secondaryColor": "#dedede",
+        "tertiaryColor": "#fad"
+    },
+    "ship":{
+
+    },
+    "sources": [
+        "sensors/gps",
+        "sensors/lrsensors",
+        "sensors/srsensors",
+        "astrometrics",
+        "stellarcartography",
+        "nav/direction",
+        "direct/toggle"
+    ]
+}
