@@ -12,6 +12,7 @@ import { Observable, map, of, share, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class ConnectorService {
+  conditionChange: EventEmitter<any> = new EventEmitter<any>;
   shipCondition(arg0: any) {
     this._mqttService.unsafePublish(this.room+"/global", JSON.stringify(arg0));
   }
@@ -84,8 +85,10 @@ export class ConnectorService {
   connect(topic:string|unknown){
     if(topic){
       const stopic:string = <string>topic;
+      console.log(stopic);
       if(Object.keys(this.dataMap).indexOf(stopic) >= 0)
        return this.dataMap[stopic];
+      console.log(this.room+'/io/'+stopic);
       const ret = this._mqttService.observe(this.room+'/io/'+stopic).pipe(share());/*map(x=>{
         let data = JSON.parse(x.payload.toString());
         data['__topic'] = x.topic;

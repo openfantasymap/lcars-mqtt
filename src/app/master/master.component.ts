@@ -52,8 +52,9 @@ export class MasterComponent implements OnInit {
     this.c.sendSettings(this.settings);
   }
 
-  shipStatus(status:string){
+  shipWide(status:string){
     this.c.shipCondition({status:status});
   }
+
 
 }

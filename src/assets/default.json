@@ -7,7 +7,7 @@
         "sidebar": [
             {"type":"button", "height":1, "target": {"type": "tab", "tab": "main", "label": "Main"}},
             {"type":"button", "height":2, "target": {"type": "tab", "tab": "lrsensor", "label": "LR Sensors"}},
-            {"type":"button", "height":2, "target": {"type": "tab", "tab": "lrsensor", "label": "SR Sensors"}}
+            {"type":"button", "height":2, "target": {"type": "tab", "tab": "srsensor", "label": "SR Sensors"}}
         ],
         "content": {
             "main": {
@@ -15,6 +15,25 @@
                 "content" :[
                     {
                         "type": "row", 
+                        "content": [
+                            {"type": "nav", "emit": "nav/direction"},
+                            {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},
+                            {"type": "button", "emit": "direct/toggle"},
+                            {"type": "button", "emit": "direct/toggle"}
+                            
+                        ]},
+                        {"type": "button", "emit": "direct/toggle"},
+                        {"type": "button", "emit": "direct/toggle"}
+                ]
+            },
+            "lrsensor": {
+                "type": "row", 
+                "content" :[
+                    {
+                        "type": "map",
+                        "height": "full",
+                        "width": "-1",
+                        
                         "content": [
                             {"type": "nav", "emit": "nav/direction"},
                             {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},

@@ -12,6 +12,7 @@ export class StationComponent implements OnInit {
 
   room: string|null = null;
   station: string|null = null;
+  condition: string = "default";
 
   configuration: any;
   settings: any = {
@@ -31,6 +32,10 @@ export class StationComponent implements OnInit {
     this.c.stationChange.subscribe(data=>{
       this.configuration = data;
     })
+
+    this.c.conditionChange.subscribe(data=>{
+      this.condition = data;
+    });
     this.ar.paramMap.subscribe(d=>{
       this.room = d.get('room');
       this.station = d.get('station');

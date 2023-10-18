@@ -18,7 +18,7 @@ export class NavComponent implements OnInit, CommandComponentInterface {
   }
 
   nav(direction:string){
-    this.c.sendMessage('navigation/direction', JSON.stringify({value:direction}));
+    this.c.sendMessage('nav/direction', JSON.stringify({value:direction}));
     this.navDirection.emit(direction);
   }
 

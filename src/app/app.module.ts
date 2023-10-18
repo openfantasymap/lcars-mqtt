@@ -23,6 +23,7 @@ import { HsliderComponent } from './base/hslider/hslider.component';
 import { PersonnelComponent } from './base/personnel/personnel.component';
 import { MasterComponent } from './master/master.component';
 import { FormsModule } from '@angular/forms';
+import { ValuerendererComponent } from './valuerenderer/valuerenderer.component';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'mqtt.fantasymaps.org',
@@ -50,7 +51,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     VsliderComponent,
     HsliderComponent,
     PersonnelComponent,
-    MasterComponent
+    MasterComponent,
+    ValuerendererComponent
   ],
   imports: [
     BrowserModule,
