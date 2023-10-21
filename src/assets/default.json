@@ -18,8 +18,8 @@
                         "content": [
                             {"type": "nav", "emit": "nav/direction"},
                             {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},
-                            {"type": "button", "emit": "direct/toggle"},
-                            {"type": "button", "emit": "direct/toggle"}
+                            {"type": "button", "label": "Bottone 1", "emit": "direct/button1"},
+                            {"type": "button", "label": "Bottone 2", "emit": "direct/button2"}
                             
                         ]},
                         {"type": "button", "emit": "direct/toggle"},
@@ -33,7 +33,7 @@
                         "type": "map",
                         "height": "full",
                         "width": "-1",
-                        
+
                         "content": [
                             {"type": "nav", "emit": "nav/direction"},
                             {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Input } from '@angular/core';
 import { BaseEmitter } from 'src/app/component-interface';
+import { ConnectorService } from 'src/app/connector.service';
 
 @Component({
   selector: 'lcars-toggle',
@@ -15,7 +16,9 @@ export class ToggleComponent extends BaseEmitter implements OnInit {
 
   click: EventEmitter<any> = new EventEmitter<any>()
 
-  constructor() {
+  constructor(
+    private c: ConnectorService 
+  ) {
     super();
   }
 
@@ -25,6 +28,8 @@ export class ToggleComponent extends BaseEmitter implements OnInit {
   onClick(event:any){
     this.status = !this.status;
     this.click.emit(this.status);
+    if(this.emit)
+    this.c.sendMessage(this.emit, JSON.stringify({"value": this.status?"true":"false"}));
   }
 
 }
