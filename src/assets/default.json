@@ -37,8 +37,8 @@
                         "content": [
                             {"type": "nav", "emit": "nav/direction"},
                             {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},
-                            {"type": "button", "emit": "direct/toggle"},
-                            {"type": "button", "emit": "direct/toggle"}
+                            {"type": "button", "emit": "direct/button", "value": "button1"},
+                            {"type": "button", "emit": "direct/button", "value": "button2"}
                             
                         ]},
                         {"type": "button", "emit": "direct/toggle"},
