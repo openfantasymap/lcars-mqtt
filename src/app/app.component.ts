@@ -12,27 +12,32 @@ import { ConnectorService } from './connector.service';
 export class AppComponent {
   title = 'lcars-mqtt';
 
-  @HostBinding("style.--main-color")
-  mainColor: string = "#ccddee";
-  @HostBinding("style.--secondary-color")
-  secondaryColor: string = "#fc6";
-  @HostBinding("style.--tertiary-color")
-  tertiaryColor: string = "#fc6";
+  /** app-root IS the LCARS theme root; lcars-core reads these custom props. */
+  @HostBinding('class.lcars') readonly lcarsRoot = true;
+
+  @HostBinding('style.--lcars-primary')
+  primaryColor = '#ffcc66';
+  @HostBinding('style.--lcars-secondary')
+  secondaryColor = '#99ccff';
+  @HostBinding('style.--lcars-tertiary')
+  tertiaryColor = '#cc99cc';
 
   /** Ship-wide alert condition: 'default' | 'alert_yellow' | 'alert_red' | 'alert_black'. */
-  condition: string = 'default';
+  condition = 'default';
 
   constructor(
     private c: ConnectorService
-  ){
-    this.c.settingsChange.subscribe(data=>{
-      this.mainColor = data.style.mainColor;
-      this.secondaryColor = data.style.secondaryColor;
-      this.tertiaryColor = data.style.tertiaryColor;
-    })
+  ) {
+    this.c.settingsChange.subscribe(data => {
+      if (data && data.style) {
+        this.primaryColor = data.style.mainColor;
+        this.secondaryColor = data.style.secondaryColor;
+        this.tertiaryColor = data.style.tertiaryColor;
+      }
+    });
     this.c.conditionChange.subscribe(cond => {
       this.condition = cond || 'default';
-    })
+    });
   }
 
   get inAlert(): boolean {

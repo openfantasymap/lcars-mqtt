@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { BaseEmitter } from '../../component-interface';
 
 @Component({
-  selector: 'lcars-nav',
+  selector: 'app-dpad',
   templateUrl: './nav.component.svg',
   styleUrls: ['./nav.component.scss']
 })

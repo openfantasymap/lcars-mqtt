@@ -1,20 +1,42 @@
-<ng-container [ngSwitch]="configuration.type">
-    <div *ngSwitchCase="'row'" class="lcars-row">
-        <ng-container *ngFor="let c of configuration.content">
-            <lcars-container [configuration]="c"></lcars-container>
-        </ng-container>
-    </div>
-    <div *ngSwitchCase="'column'" class="lcars-column">
-        <ng-container *ngFor="let c of configuration.content">
-            <lcars-container [configuration]="c"></lcars-container>
-        </ng-container>
-    </div>
-
-    <lcars-issues *ngSwitchCase="'issues'" [configuration]="configuration"></lcars-issues>
-    <lcars-stats *ngSwitchCase="'stats'" [configuration]="configuration"></lcars-stats>
-    <lcars-panel *ngSwitchCase="'panel'" [configuration]="configuration"></lcars-panel>
-    <lcars-nav *ngSwitchCase="'nav'" [emit]="configuration.emit"></lcars-nav>
-    <lcars-button *ngSwitchCase="'button'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [value]="configuration.value" [emit]="configuration.emit"></lcars-button>
-    <lcars-toggle *ngSwitchCase="'toggle'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-toggle>
-
-</ng-container>
+@switch (configuration.type) {
+  @case ('row') {
+    <lcars-row [fill]="!!configuration.fill">
+      @for (c of configuration.content; track $index) {
+        <lcars-container [configuration]="c"></lcars-container>
+      }
+    </lcars-row>
+  }
+  @case ('column') {
+    <lcars-column [fill]="!!configuration.fill">
+      @for (c of configuration.content; track $index) {
+        <lcars-container [configuration]="c"></lcars-container>
+      }
+    </lcars-column>
+  }
+  @case ('panel') {
+    <lcars-panel>
+      <lcars-textbox size="big">{{ configuration.title }}</lcars-textbox>
+      @if (configuration.note) {
+        <lcars-textbox textColor="muted">{{ configuration.note }}</lcars-textbox>
+      }
+    </lcars-panel>
+  }
+  @case ('button') {
+    <button lcars-button (click)="emit(configuration)">{{ configuration.label }}</button>
+  }
+  @case ('toggle') {
+    <lcars-toggle
+      [label]="configuration.label || ''"
+      [checked]="toggleState(configuration)"
+      (checkedChange)="emitToggle(configuration, $event)"></lcars-toggle>
+  }
+  @case ('nav') {
+    <app-dpad [emit]="configuration.emit"></app-dpad>
+  }
+  @case ('issues') {
+    <lcars-issues></lcars-issues>
+  }
+  @case ('stats') {
+    <lcars-stats [configuration]="configuration"></lcars-stats>
+  }
+}

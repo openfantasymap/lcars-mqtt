@@ -9,6 +9,8 @@
   },
   "private": true,
   "dependencies": {
+    "@openfantasymap/lcars-core": "^0.1.0",
+    "@openfantasymap/lcars-ngx": "^0.1.0",
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",

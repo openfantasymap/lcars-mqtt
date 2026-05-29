@@ -11,6 +11,7 @@ import { IssuesPanelComponent } from './issues-panel/issues-panel.component';
 import { ShipOverviewComponent } from './ship-overview/ship-overview.component';
 import { ScreenEditorComponent } from './screen-editor/screen-editor.component';
 import { ValuerendererComponent } from '../valuerenderer/valuerenderer.component';
+import { LcarsTabsComponent, LcarsTabComponent } from '@openfantasymap/lcars-ngx';
 
 @Component({
   selector: 'app-master',
@@ -20,7 +21,9 @@ import { ValuerendererComponent } from '../valuerenderer/valuerenderer.component
     IssuesPanelComponent,
     ShipOverviewComponent,
     ScreenEditorComponent,
-    ValuerendererComponent
+    ValuerendererComponent,
+    LcarsTabsComponent,
+    LcarsTabComponent
   ],
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss']

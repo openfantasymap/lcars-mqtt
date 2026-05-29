@@ -1,0 +1,20 @@
+/* Interactive directional pad (the one app widget with no lcars-ngx equivalent;
+   promoted to LcarsDpadComponent in the library in a later phase). Styled with
+   the lcars-core theme custom properties. */
+:host {
+  display: inline-block;
+  width: 12rem;
+  max-width: 100%;
+}
+
+:host svg {
+  width: 100%;
+  height: auto;
+}
+
+.lcars-tan-bg { fill: var(--lcars-primary, #ffcc66); }
+.lcars-golden-tanoi-bg { fill: var(--lcars-secondary, #ffcc99); }
+.lcars-blue-bell-bg { fill: var(--lcars-tertiary, #99ccff); }
+
+.button { cursor: pointer; }
+.button:active { fill: var(--lcars-accent, #cc6699); }

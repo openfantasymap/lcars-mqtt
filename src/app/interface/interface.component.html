@@ -1,50 +1,24 @@
-<div class="lcars-app-container">
-    <!-- HEADER ==================================================== -->
-    <div id="header" class="lcars-row header">
+<lcars-app>
+  <header lcars-app-header>
+    <lcars-bar [title]="title || ''" titleSide="right" fill></lcars-bar>
+  </header>
 
-        <!-- ELBOW -->
-        <div class="lcars-elbow left-bottom lcars-tan-bg"></div>
+  <nav lcars-app-sidebar>
+    <lcars-nav>
+      @for (c of sidebar; track $index) {
+        <button lcars-nav-item [active]="active === c.target?.tab" (click)="do(c.target)">
+          {{ c.target?.label }}
+        </button>
+      }
+    </lcars-nav>
+  </nav>
 
-        <!-- BAR WITH TITLE -->
-        <div class="lcars-bar horizontal lcars-tan-bg">
-            <div class="lcars-title right">{{title}}</div>
-        </div>
-
-        <!-- ROUNDED EDGE DECORATED -->
-        <div class="lcars-bar horizontal lcars-tan-bg right-end decorated"></div>
-    </div>
-
-    <!-- SIDE MENU ================================================= -->
-    <div id="left-menu" #sidebar class="lcars-column start-space lcars-u-1">
-
-        <!-- FILLER -->
-        <div class="lcars-bar fill lcars-tan-bg lcars-u-1"></div>
-        <div (click)="do(c.target)" *ngFor="let c of configuration.structure.sidebar" class="lcars-element button lcars-golden-tanoi-bg lcars-u-1-{{c.height}}">
-            {{c.target.label}}
-        </div>
-        
-        <div class="lcars-bar fill lcars-tan-bg lcars-u-1"></div>
-    </div>
-
-    <!-- FOOTER ==================================================== -->
-    <div id="footer" class="lcars-row ">
-        <!-- ELBOW -->
-        <div class="lcars-elbow left-top lcars-tan-bg"></div>
-        <!-- BAR -->
-        <!-- BAR WITH TITLE -->
-        <div class="lcars-bar horizontal lcars-tan-bg bottom">
-            <div class="lcars-title left">{{footer}}</div>
-        </div>
-        <!-- ROUNDED EDGE -->
-        <div class="lcars-bar horizontal right-end left-divider lcars-tan-bg bottom"></div>
-    </div>
-
-    <div id="container">
-        <ng-container *ngFor="let r of configuration.structure.content|keyvalue">
-            <ng-container *ngIf="active === r.key">
-                <lcars-container [configuration]="r.value"></lcars-container>
-            </ng-container>
-        </ng-container >
-    </div>
-    
-</div>
+  <main lcars-app-content>
+    @for (r of contentEntries; track r.key) {
+      @if (active === r.key) {
+        <lcars-container [configuration]="r.value"></lcars-container>
+      }
+    }
+    <lcars-bar [title]="footer || ''" titleSide="left"></lcars-bar>
+  </main>
+</lcars-app>

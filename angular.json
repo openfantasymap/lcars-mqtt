@@ -45,6 +45,7 @@
               }
             ],
             "styles": [
+              "node_modules/@openfantasymap/lcars-core/dist/lcars.css",
               "src/styles.scss"
             ],
             "scripts": []
