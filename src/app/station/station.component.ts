@@ -3,9 +3,11 @@ import { ConnectorService } from '../connector.service';
 import { IssueService } from '../issue.service';
 import { ShipService } from '../ship.service';
 import { ActivatedRoute } from '@angular/router';
+import { InterfaceComponent } from '../interface/interface.component';
 
 @Component({
   selector: 'app-station',
+  imports: [InterfaceComponent],
   templateUrl: './station.component.html',
   styleUrls: ['./station.component.scss']
 })

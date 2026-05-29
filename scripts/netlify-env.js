@@ -16,7 +16,7 @@ for (const k of keys) {
   env[k] = process.env[k] || '';
 }
 
-const out = path.join(__dirname, '..', 'dist', 'lcars-mqtt', 'assets', 'env.json');
+const out = path.join(__dirname, '..', 'dist', 'lcars-mqtt', 'browser', 'assets', 'env.json');
 fs.mkdirSync(path.dirname(out), { recursive: true });
 fs.writeFileSync(out, JSON.stringify(env, null, 2) + '\n');
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ShipService } from '../../ship.service';
 import { Ship } from '../../models/ship';
 
@@ -9,6 +11,7 @@ import { Ship } from '../../models/ship';
  */
 @Component({
   selector: 'lcars-ship-overview',
+  imports: [CommonModule, FormsModule],
   templateUrl: './ship-overview.component.html',
   styleUrls: ['./ship-overview.component.scss']
 })

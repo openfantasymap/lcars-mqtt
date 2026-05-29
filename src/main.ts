@@ -1,19 +1,14 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule, MQTT_SERVICE_OPTIONS } from './app/app.module';
-import { environment } from './environments/environment';
-
-if (environment.production) {
-  enableProdMode();
-}
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
+import { MQTT_SERVICE_OPTIONS } from './app/mqtt.config';
 
 // Optionally override the MQTT connection at runtime from /assets/env.json
-// (docker-entrypoint.sh writes container env vars there), so the same build can
-// target a different broker without rebuilding. Mutating MQTT_SERVICE_OPTIONS
-// before bootstrap is safe: MqttModule.forRoot holds this exact object and
-// MqttService is only constructed once the app boots below. Falls back to the
-// environment defaults when the file is absent (e.g. on Netlify).
+// (docker-entrypoint.sh / Netlify build write container env vars there), so the
+// same build can target a different broker without rebuilding. Mutating
+// MQTT_SERVICE_OPTIONS before bootstrap is safe: MqttModule.forRoot holds this
+// exact object and MqttService is only constructed once the app boots below.
 fetch('/assets/env.json')
   .then(res => (res.ok ? res.json() : {}))
   .catch(() => ({}))
@@ -24,5 +19,5 @@ fetch('/assets/env.json')
     if (env && env.MQTT_PROTOCOL) { MQTT_SERVICE_OPTIONS.protocol = env.MQTT_PROTOCOL; }
     if (env && env.MQTT_URL) { MQTT_SERVICE_OPTIONS.url = env.MQTT_URL; }
   })
-  .then(() => platformBrowserDynamic().bootstrapModule(AppModule))
+  .then(() => bootstrapApplication(AppComponent, appConfig))
   .catch(err => console.error(err));

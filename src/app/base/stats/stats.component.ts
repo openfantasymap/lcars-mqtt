@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ShipService } from '../../ship.service';
 import { Ship, Stat } from '../../models/ship';
 
@@ -13,6 +14,7 @@ import { Ship, Stat } from '../../models/ship';
  */
 @Component({
   selector: 'lcars-stats',
+  imports: [CommonModule],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })

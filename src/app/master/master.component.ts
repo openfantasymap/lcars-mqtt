@@ -1,13 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ConnectorService } from '../connector.service';
 import { IssueService } from '../issue.service';
 import { ShipService } from '../ship.service';
 import { ScreenService } from '../screen.service';
 import { ActivatedRoute } from '@angular/router';
 import { share } from 'rxjs';
+import { IssuesPanelComponent } from './issues-panel/issues-panel.component';
+import { ShipOverviewComponent } from './ship-overview/ship-overview.component';
+import { ScreenEditorComponent } from './screen-editor/screen-editor.component';
+import { ValuerendererComponent } from '../valuerenderer/valuerenderer.component';
 
 @Component({
   selector: 'app-master',
+  imports: [
+    CommonModule,
+    FormsModule,
+    IssuesPanelComponent,
+    ShipOverviewComponent,
+    ScreenEditorComponent,
+    ValuerendererComponent
+  ],
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss']
 })

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IssueService } from '../../issue.service';
 import { Issue } from '../../models/issue';
 
@@ -9,6 +10,7 @@ import { Issue } from '../../models/issue';
  */
 @Component({
   selector: 'lcars-issues',
+  imports: [CommonModule],
   templateUrl: './issues.component.html',
   styleUrls: ['./issues.component.scss']
 })

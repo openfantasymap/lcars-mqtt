@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 /**
  * Lightweight section header / placeholder. Used to title areas of a station
@@ -8,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
  */
 @Component({
   selector: 'lcars-panel',
+  imports: [CommonModule],
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss']
 })

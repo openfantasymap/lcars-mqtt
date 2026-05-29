@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { IssueService } from '../../issue.service';
 import { ConnectorService } from '../../connector.service';
 import { BROADCAST, Issue, IssuePreset } from '../../models/issue';
@@ -15,6 +17,7 @@ interface CondPair {
  */
 @Component({
   selector: 'lcars-issues-panel',
+  imports: [CommonModule, FormsModule],
   templateUrl: './issues-panel.component.html',
   styleUrls: ['./issues-panel.component.scss']
 })

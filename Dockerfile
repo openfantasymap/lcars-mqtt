@@ -1,4 +1,4 @@
-FROM node:16.13.0 as build
+FROM node:20 as build
 WORKDIR /app
 COPY package*.json /app/
 RUN npm ci
@@ -12,7 +12,8 @@ FROM nginx:alpine
 
 WORKDIR /usr/share/nginx/html/
 
-COPY --from=build /app/dist/out/ .
+# Angular's application builder nests the deployable output under /browser.
+COPY --from=build /app/dist/out/browser/ .
 
 RUN chmod 777 *
 

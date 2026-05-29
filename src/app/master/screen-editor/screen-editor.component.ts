@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ScreenService } from '../../screen.service';
 
 interface PaletteEntry {
@@ -13,6 +15,7 @@ interface PaletteEntry {
  */
 @Component({
   selector: 'lcars-screen-editor',
+  imports: [CommonModule, FormsModule],
   templateUrl: './screen-editor.component.html',
   styleUrls: ['./screen-editor.component.scss']
 })

@@ -5,13 +5,12 @@
   # After building, bake the MQTT_* build env vars into assets/env.json so the
   # app picks them up at runtime (see scripts/netlify-env.js and src/main.ts).
   command = "npm run build && node scripts/netlify-env.js"
-  publish = "dist/lcars-mqtt"
+  # Angular's application builder nests the deployable output under /browser.
+  publish = "dist/lcars-mqtt/browser"
 
 [build.environment]
-  # Angular 14 CLI supports Node ^14.15 || ^16.10; the build is verified on 16.
-  # If Netlify drops Node 16, switch to "18" and add
-  # NODE_OPTIONS = "--openssl-legacy-provider" to work around OpenSSL 3.
-  NODE_VERSION = "16"
+  # Angular 21 requires Node >= 20.19; build verified on Node 20.
+  NODE_VERSION = "20"
   # Broker connection (override these in the Netlify UI or here as needed):
   # MQTT_HOST = "mqtt.fantasymaps.org"
   # MQTT_PORT = "9001"

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
-import { BaseEmitter } from 'src/app/component-interface';
+import { BaseEmitter } from '../../component-interface';
 
 @Component({
   selector: 'lcars-button',

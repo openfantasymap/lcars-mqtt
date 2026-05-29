@@ -1,8 +1,11 @@
 import { Component, HostBinding } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { ConnectorService } from './connector.service';
 
 @Component({
   selector: 'app-root',
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -10,11 +13,11 @@ export class AppComponent {
   title = 'lcars-mqtt';
 
   @HostBinding("style.--main-color")
-  private mainColor: string = "#ccddee";
+  mainColor: string = "#ccddee";
   @HostBinding("style.--secondary-color")
-  private secondaryColor: string = "#fc6";
+  secondaryColor: string = "#fc6";
   @HostBinding("style.--tertiary-color")
-  private tertiaryColor: string = "#fc6";
+  tertiaryColor: string = "#fc6";
 
   /** Ship-wide alert condition: 'default' | 'alert_yellow' | 'alert_red' | 'alert_black'. */
   condition: string = 'default';

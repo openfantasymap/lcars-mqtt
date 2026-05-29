@@ -1,4 +1,4 @@
-import { Component, inject, Input } from "@angular/core";
+import { Directive, inject, Input } from "@angular/core";
 import { ConnectorService } from "./connector.service";
 import { IssueService } from "./issue.service";
 
@@ -16,9 +16,7 @@ export interface CommandComponentInterface {
  * `{room}/io/{emit}` AND reports it to IssueService so auto-resolved issues can
  * see the player's console state.
  */
-@Component({
-    template: ''
-})
+@Directive()
 export class BaseEmitter implements CommandComponentInterface {
     @Input() emit: string | null = null;
 

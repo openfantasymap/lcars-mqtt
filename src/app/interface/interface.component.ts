@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ConnectorService } from '../connector.service';
+import { ContainerComponent } from '../base/container/container.component';
 
 @Component({
   selector: 'lcars-interface',
+  imports: [CommonModule, ContainerComponent],
   templateUrl: './interface.component.html',
   styleUrls: ['./interface.component.scss']
 })

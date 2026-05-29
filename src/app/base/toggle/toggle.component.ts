@@ -1,8 +1,10 @@
 import { Component, EventEmitter, OnInit, Input } from '@angular/core';
-import { BaseEmitter } from 'src/app/component-interface';
+import { CommonModule } from '@angular/common';
+import { BaseEmitter } from '../../component-interface';
 
 @Component({
   selector: 'lcars-toggle',
+  imports: [CommonModule],
   templateUrl: './toggle.component.html',
   styleUrls: ['./toggle.component.scss']
 })
