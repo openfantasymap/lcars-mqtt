@@ -2,7 +2,9 @@
 # Static SPA: Netlify builds with the Angular CLI and serves dist/lcars-mqtt.
 
 [build]
-  command = "npm run build"
+  # After building, bake the MQTT_* build env vars into assets/env.json so the
+  # app picks them up at runtime (see scripts/netlify-env.js and src/main.ts).
+  command = "npm run build && node scripts/netlify-env.js"
   publish = "dist/lcars-mqtt"
 
 [build.environment]
@@ -10,6 +12,11 @@
   # If Netlify drops Node 16, switch to "18" and add
   # NODE_OPTIONS = "--openssl-legacy-provider" to work around OpenSSL 3.
   NODE_VERSION = "16"
+  # Broker connection (override these in the Netlify UI or here as needed):
+  # MQTT_HOST = "mqtt.fantasymaps.org"
+  # MQTT_PORT = "9001"
+  # MQTT_PATH = "/ws"
+  # MQTT_PROTOCOL = "wss"
 
 # SPA fallback: client-side routes like /lcars/:room/master must resolve to
 # index.html. Netlify serves real files (JS/CSS/assets) first, so this only

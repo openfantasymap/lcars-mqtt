@@ -38,7 +38,7 @@ There is **no lint config** in this project (the platform CLAUDE.md mentions `fl
 
 ### Netlify (static)
 
-`netlify.toml` drives it: `npm run build` → publish `dist/lcars-mqtt`, with a `/* → /index.html` 200 redirect for the SPA routes and `NODE_VERSION = "16"` (pinned via `.nvmrc` too). Static — the broker comes from `environment.prod.ts` (no container to inject `env.json`), so to point a Netlify deploy at a different broker, edit `src/environments/environment.prod.ts` (or the committed `src/assets/env.json` values) and redeploy. Connect the repo in the Netlify UI, or `netlify deploy --prod` with the CLI; settings are read from `netlify.toml`, no dashboard config required.
+`netlify.toml` drives it: build command `npm run build && node scripts/netlify-env.js` → publish `dist/lcars-mqtt`, with a `/* → /index.html` 200 redirect for the SPA routes and `NODE_VERSION = "16"` (pinned via `.nvmrc` too). Netlify env vars are **build-time only**, so `scripts/netlify-env.js` (the Netlify analogue of `docker-entrypoint.sh`) bakes `MQTT_HOST/PORT/PATH/PROTOCOL/URL` from `process.env` into the published `assets/env.json` after the build; `main.ts` reads it at runtime. **To point a Netlify deploy at a different broker, set those vars in the Netlify UI (Site settings → Environment variables) or `netlify.toml [build.environment]` and redeploy** — unset vars fall back to the `environment.prod.ts` defaults. Connect the repo in the Netlify UI, or `netlify deploy --prod` with the CLI.
 
 ## Architecture — the parts that matter
 
