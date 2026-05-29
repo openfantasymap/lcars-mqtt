@@ -38,6 +38,8 @@ export class IssueService {
   private setupRoom: string | undefined;
   /** Auto-issues already reported by this station, to avoid duplicate reports. */
   private reported = new Set<string>();
+  /** Last ship-wide condition published, to avoid redundant `{room}/global` writes. */
+  private lastAlert: string | undefined;
 
   constructor(
     private c: ConnectorService,
@@ -174,6 +176,39 @@ export class IssueService {
   private publishBoard() {
     this.issuesChange.emit(this.issues);
     this.c.publishJson('issues', this.issues, { qos: 1, retain: true });
+    this.syncAlert();
+  }
+
+  /**
+   * Drive the ship-wide alert from the highest-severity OPEN issue, so creating
+   * a red issue puts every screen on red alert and resolving it stands down.
+   * (`info` issues don't raise an alert.) Master only; deduped so we publish
+   * `{room}/global` only when the effective condition changes.
+   */
+  private syncAlert() {
+    if (!this.master) {
+      return;
+    }
+    const rank: Record<string, number> = { info: 0, yellow: 1, black: 2, red: 3 };
+    const conditionFor: Record<string, string> = {
+      yellow: 'alert_yellow',
+      red: 'alert_red',
+      black: 'alert_black'
+    };
+    let top: string | null = null;
+    for (const i of this.issues) {
+      if (i.status !== 'open' || i.severity === 'info') {
+        continue;
+      }
+      if (!top || rank[i.severity] > rank[top]) {
+        top = i.severity;
+      }
+    }
+    const condition = top ? conditionFor[top] : 'default';
+    if (condition !== this.lastAlert) {
+      this.lastAlert = condition;
+      this.c.shipCondition({ status: condition });
+    }
   }
 
   // --- Station-side: report control state + auto-resolve --------------------

@@ -73,7 +73,8 @@ export class ConnectorService {
   }
 
   shipCondition(arg0: any) {
-    this.publishJson('global', arg0);
+    // Retained so any screen joining mid-session immediately reflects the alert.
+    this.publishJson('global', arg0, { qos: 1, retain: true });
   }
 
   sendSettings(settings: any) {
@@ -90,6 +91,10 @@ export class ConnectorService {
       this.settings = data;
       this.setupConnectors();
       this.settingsChange.emit(this.settings);
+    });
+    // Ship-wide alert condition (driven by manual SHIP buttons or open issues).
+    this.observeJson('global').subscribe((data: any) => {
+      this.conditionChange.emit(data && data.status ? data.status : 'default');
     });
     this.publishJson('connections', { op: "connect" }, { qos: 1 });
   }

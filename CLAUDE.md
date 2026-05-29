@@ -48,7 +48,7 @@ A single root-provided service wraps `ngx-mqtt`. **All cross-component state and
 | Topic | Direction | Purpose |
 |-------|-----------|---------|
 | `{room}/settings` | sub + pub | Global settings JSON (title, footer, `style` colors, `sources[]`). Seeded from `/assets/settings.json`, then live-overridden by MQTT. |
-| `{room}/global` | pub | Ship condition / alerts (`shipCondition`). |
+| `{room}/global` | sub + pub | **Retained** ship-wide alert condition (`shipCondition`, `{status}`). On receipt `ConnectorService` emits `conditionChange`; `AppComponent` shows a full-screen alert overlay. Driven by the SHIP-tab buttons *and* by open-issue severity (see Issues). |
 | `{room}/connections` | pub | Connect handshake (`{op:"connect", station?}`), QoS 1. |
 | `{room}/io/{source}` | sub + pub | Per-source data streams. `sendMessage(topic, msg)` / `publishIo(emit, value)` publish here; command widgets publish their value here on interaction. |
 | `{room}/{station}/form` | sub | Station-specific layout config JSON. Seeded from `/assets/default.json`. |
@@ -78,7 +78,7 @@ The GM (Master view) authors **Issues** — problems posed to one station or the
 
 - **Flow:** GM authors via `IssuesPanelComponent` (Issues tab in Master) → `IssueService.createIssue/createFromPreset` mutates the board and republishes (retained). Stations render their slice via the `lcars-issues` widget (`base/issues/`, a `*ngSwitchCase` in the container; included in `default.json`). When a station's `localState` matches an open auto-issue's condition, it publishes a `ResolutionReport` to `{room}/issues/resolution`; **Master commits** it back to the board.
 - **Presets:** `src/assets/issues.json` is the starter library; the GM can also push a live override to `{room}/issues/presets`.
-- Severity (`info|yellow|red|black`) currently only colors the UI; it is the intended hook for driving `{room}/global` ship alerts later.
+- **Severity drives the ship-wide alert.** The highest-severity OPEN issue sets `{room}/global` (Master-only, deduped in `IssueService.syncAlert`): `yellow→alert_yellow`, `red→alert_red`, `black→alert_black` (rank red>black>yellow; `info` raises nothing). Every screen (`AppComponent`) shows a pulsing full-screen alert overlay. Resolving/cancelling the issue stands the alert down. The manual SHIP-tab buttons write the same topic; an issue change recomputes from issues and will override a manual setting.
 
 ### Fleet / ship stats (`src/app/ship.service.ts`, `src/app/models/ship.ts`)
 The GM edits a **fleet** of ships in the **OVERVIEW** tab (`ShipOverviewComponent`); each `Ship` has an `alert` level and a free-form list of `Stat`s (`label`, `value`, optional `max` → renders as a gauge). Same single-writer model as issues: the fleet is a **retained snapshot on `{room}/ships`, written only by Master**, mirrored to every station.

@@ -1476,3 +1476,53 @@ a:active {
   font-weight: 500;
   background-color: #0c0806;
 }
+
+/* Ship-wide alert overlay (see AppComponent.condition). Pointer-events disabled
+   so it never blocks the consoles underneath. */
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 0.6rem solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.alert-overlay .alert-label {
+  margin-top: 0.4rem;
+  padding: 0.2rem 1.5rem;
+  font-weight: bold;
+  font-size: 160%;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  border-radius: 1rem;
+  color: #000;
+}
+.alert-overlay.alert_red {
+  border-color: #f00;
+  animation: alert-pulse 1s infinite;
+}
+.alert-overlay.alert_red .alert-label {
+  background-color: #f00;
+  color: #fff;
+}
+.alert-overlay.alert_yellow {
+  border-color: #fc6;
+  animation: alert-pulse 1.6s infinite;
+}
+.alert-overlay.alert_yellow .alert-label {
+  background-color: #fc6;
+}
+.alert-overlay.alert_black {
+  border-color: #a6f;
+  animation: alert-pulse 1.4s infinite;
+}
+.alert-overlay.alert_black .alert-label {
+  background-color: #a6f;
+}
+@keyframes alert-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}

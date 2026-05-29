@@ -1,1 +1,6 @@
 <router-outlet></router-outlet>
+
+<!-- Ship-wide alert: driven by the highest-severity open issue (or the SHIP tab). -->
+<div class="alert-overlay" [ngClass]="condition" *ngIf="inAlert">
+    <div class="alert-label">{{alertLabel}}</div>
+</div>
