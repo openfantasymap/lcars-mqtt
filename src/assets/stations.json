@@ -1,0 +1,209 @@
+{
+  "comms": {
+    "title": "COMMS",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Hailing"}},
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "channels", "label": "Channels"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Communications"},
+            {"type": "row", "content": [
+              {"type": "button", "label": "Hail", "emit": "comms/hail"},
+              {"type": "button", "label": "Open", "emit": "comms/open"},
+              {"type": "button", "label": "Close", "emit": "comms/close"}
+            ]},
+            {"type": "panel", "title": "Message Log", "note": "incoming transmissions (display widget pending)"},
+            {"type": "issues"}
+          ]
+        },
+        "channels": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Subspace Channels"},
+            {"type": "row", "content": [
+              {"type": "toggle", "label": "Band 1", "emit": "comms/band1"},
+              {"type": "toggle", "label": "Band 2", "emit": "comms/band2"},
+              {"type": "toggle", "label": "Emergency", "emit": "comms/emergency"}
+            ]}
+          ]
+        }
+      }
+    },
+    "sources": ["comms/incoming"]
+  },
+
+  "conn": {
+    "title": "CONN",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Helm"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Helm Control"},
+            {"type": "row", "content": [
+              {"type": "nav", "emit": "conn/heading"},
+              {"type": "column", "content": [
+                {"type": "toggle", "label": "Impulse", "emit": "conn/impulse"},
+                {"type": "button", "label": "Full Stop", "emit": "conn/stop"},
+                {"type": "button", "label": "Engage", "emit": "conn/engage"}
+              ]}
+            ]},
+            {"type": "panel", "title": "Warp Speed"},
+            {"type": "row", "content": [
+              {"type": "button", "label": "Warp 1", "emit": "conn/warp", "value": 1},
+              {"type": "button", "label": "Warp 3", "emit": "conn/warp", "value": 3},
+              {"type": "button", "label": "Warp 5", "emit": "conn/warp", "value": 5},
+              {"type": "button", "label": "Warp 9", "emit": "conn/warp", "value": 9}
+            ]},
+            {"type": "issues"}
+          ]
+        }
+      }
+    },
+    "sources": ["conn/heading", "conn/speed"]
+  },
+
+  "navigation": {
+    "title": "NAV",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Nav"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Navigation"},
+            {"type": "row", "content": [
+              {"type": "nav", "emit": "nav/course"},
+              {"type": "column", "content": [
+                {"type": "button", "label": "Plot Course", "emit": "nav/plot"},
+                {"type": "button", "label": "Clear", "emit": "nav/clear"}
+              ]}
+            ]},
+            {"type": "panel", "title": "Star Charts", "note": "astrometric display (widget pending)"},
+            {"type": "issues"}
+          ]
+        }
+      }
+    },
+    "sources": ["nav/course"]
+  },
+
+  "bridge": {
+    "title": "BRIDGE",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Command"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Bridge — Command Overview"},
+            {"type": "stats"},
+            {"type": "issues"}
+          ]
+        }
+      }
+    },
+    "sources": []
+  },
+
+  "engineering": {
+    "title": "ENGINEERING",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Systems"}},
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "power", "label": "Power"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Engineering — Systems"},
+            {"type": "stats", "editable": true},
+            {"type": "issues"}
+          ]
+        },
+        "power": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Power Routing"},
+            {"type": "row", "content": [
+              {"type": "toggle", "label": "Shields", "emit": "power/shields"},
+              {"type": "toggle", "label": "Weapons", "emit": "power/weapons"},
+              {"type": "toggle", "label": "Engines", "emit": "power/engines"},
+              {"type": "toggle", "label": "Life Support", "emit": "power/life"}
+            ]},
+            {"type": "panel", "title": "Warp Core", "note": "containment controls (widget pending)"},
+            {"type": "row", "content": [
+              {"type": "toggle", "label": "Containment", "emit": "warp/containment"},
+              {"type": "button", "label": "Eject Core", "emit": "warp/eject"}
+            ]}
+          ]
+        }
+      }
+    },
+    "sources": []
+  },
+
+  "transporters": {
+    "title": "TRANSPORTER",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Transport"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Transporter Control"},
+            {"type": "panel", "title": "Pattern Buffer", "note": "lock target, then energize (display widget pending)"},
+            {"type": "row", "content": [
+              {"type": "toggle", "label": "Lock", "emit": "transporter/lock"},
+              {"type": "button", "label": "Scan", "emit": "transporter/scan"},
+              {"type": "button", "label": "Energize", "emit": "transporter/energize"}
+            ]},
+            {"type": "issues"}
+          ]
+        }
+      }
+    },
+    "sources": ["transporter/status"]
+  },
+
+  "default": {
+    "title": "LCARS",
+    "footer": "NCC-1701-G",
+    "structure": {
+      "sidebar": [
+        {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Main"}}
+      ],
+      "content": {
+        "main": {
+          "type": "column",
+          "content": [
+            {"type": "panel", "title": "Station", "note": "no role layout for this station id"},
+            {"type": "stats"},
+            {"type": "issues"}
+          ]
+        }
+      }
+    },
+    "sources": []
+  }
+}

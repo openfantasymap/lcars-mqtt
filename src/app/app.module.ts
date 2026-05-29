@@ -25,6 +25,7 @@ import { MasterComponent } from './master/master.component';
 import { IssuesComponent } from './base/issues/issues.component';
 import { IssuesPanelComponent } from './master/issues-panel/issues-panel.component';
 import { StatsComponent } from './base/stats/stats.component';
+import { PanelComponent } from './base/panel/panel.component';
 import { ShipOverviewComponent } from './master/ship-overview/ship-overview.component';
 import { FormsModule } from '@angular/forms';
 import { ValuerendererComponent } from './valuerenderer/valuerenderer.component';
@@ -63,6 +64,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     IssuesComponent,
     IssuesPanelComponent,
     StatsComponent,
+    PanelComponent,
     ShipOverviewComponent
   ],
   imports: [

@@ -126,10 +126,15 @@ export class ConnectorService {
   }
 
   setupStation() {
-    this.h.get('/assets/default.json').subscribe(data => {
-      console.log(data);
-      this.stationSettings = data;
-      this.stationChange.emit(this.stationSettings);
+    // Seed the layout from the per-role registry, keyed by station id (e.g.
+    // 'comms', 'conn', 'engineering'), falling back to 'default'. The GM can
+    // still override any station's form live over MQTT below.
+    this.h.get<any>('/assets/stations.json').subscribe(data => {
+      const layout = data && (data[this.station as string] || data['default']);
+      if (layout) {
+        this.stationSettings = layout;
+        this.stationChange.emit(this.stationSettings);
+      }
     });
     this.observeJson(this.station + '/form').subscribe(data => {
       this.stationSettings = data;

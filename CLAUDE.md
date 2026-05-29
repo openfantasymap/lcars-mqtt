@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 An Angular 14 single-page app that renders an **LCARS-style control panel whose entire layout is described by JSON received over MQTT**. There is almost no hard-coded screen — components are instantiated dynamically from a configuration tree. Two roles share one app:
 
-- **Station** (`lcars/:room/:station`) — a display/console for one game station (e.g. `sci`, `nav`). Renders the LCARS chrome + a config-driven widget tree, and publishes user actions back to MQTT.
+- **Station** (`lcars/:room/:station`) — a player console for one bridge role. The role is the URL segment; the built-in roster is `comms`, `conn`, `navigation`, `bridge`, `engineering`, `transporters` (anything else gets the `default` layout). Each loads its own layout from `/assets/stations.json` (see below), renders the LCARS chrome + a config-driven widget tree, and publishes user actions back to MQTT.
 - **Master** (`lcars/:room/master`) — the GM control surface: edits global settings (title/footer/theme), pushes ship conditions (alerts), and watches incoming data streams.
 
 A "room" namespaces an entire session's MQTT topic space.
@@ -51,7 +51,7 @@ A single root-provided service wraps `ngx-mqtt`. **All cross-component state and
 | `{room}/global` | sub + pub | **Retained** ship-wide alert condition (`shipCondition`, `{status}`). On receipt `ConnectorService` emits `conditionChange`; `AppComponent` shows a full-screen alert overlay. Driven by the SHIP-tab buttons *and* by open-issue severity (see Issues). |
 | `{room}/connections` | pub | Connect handshake (`{op:"connect", station?}`), QoS 1. |
 | `{room}/io/{source}` | sub + pub | Per-source data streams. `sendMessage(topic, msg)` / `publishIo(emit, value)` publish here; command widgets publish their value here on interaction. |
-| `{room}/{station}/form` | sub | Station-specific layout config JSON. Seeded from `/assets/default.json`. |
+| `{room}/{station}/form` | sub | Station layout override (GM-pushed). Seed comes from `/assets/stations.json` keyed by role; this topic overrides it live. |
 | `{room}/issues` | sub + pub (Master only) | **Retained** issue board (`Issue[]`). See the Issues section below. |
 | `{room}/issues/resolution` | sub (Master) / pub (station) | Station-reported auto-resolutions (`ResolutionReport`). |
 | `{room}/issues/presets` | sub | Optional retained preset-library override; otherwise from `/assets/issues.json`. |
@@ -66,9 +66,9 @@ The UI is a recursive tree built from JSON, not from templates:
 1. `InterfaceComponent` (`lcars-interface`) draws the LCARS frame — header, footer, sidebar buttons — and selects a `content` block by `active` tab key.
 2. `ContainerComponent` (`lcars-container`, `base/container/`) is **recursive**. Its template `*ngSwitch`es on `configuration.type` to emit the right widget and recurses into `configuration.content[]` for `row`/`column`.
 
-**To add a new widget type:** create the component under `src/app/base/`, declare it in `app.module.ts`, then add a `*ngSwitchCase` in `base/container/container.component.html`. ⚠️ Currently the switch only wires up `row`, `column`, `nav`, `button`, `toggle`, `issues` — the other components in `base/` (`warpcore`, `stellar`, `transporterbuffer`, `personnel`, `vslider`, `hslider`, `chrome`) exist but are **not yet reachable from the dynamic renderer**.
+**To add a new widget type:** create the component under `src/app/base/`, declare it in `app.module.ts`, then add a `*ngSwitchCase` in `base/container/container.component.html`. The switch wires up `row`, `column`, `nav`, `button`, `toggle`, `issues`, `stats`, and `panel` (a section header / placeholder, `{type:'panel', title, note?}`). ⚠️ `warpcore`, `stellar`, `transporterbuffer`, `personnel`, `vslider`, `hslider`, `chrome` are still **unbuilt stubs** ("X works!", `app-*` selectors) — not reachable from the renderer; use `panel` placeholders until they're built.
 
-Config shapes live in `src/assets/default.json` (a station `form`) and `src/assets/settings.json` (global settings). Study these to understand the expected JSON contract before changing the renderer.
+**Per-station layouts:** `ConnectorService.setupStation()` seeds the layout from `/assets/stations.json` keyed by the station id (falling back to `default`), then lets the GM override it live via `{room}/{station}/form`. So to change what a role's console shows, edit its entry in `stations.json`. Each entry is a station `form`: `{title, footer, structure: {sidebar[], content{tab: <container>}}, sources[]}`. (`src/assets/default.json` is the older single SCI layout, now superseded by `stations.json` and unused by the station loader.) Global (non-layout) config lives in `src/assets/settings.json`.
 
 ### Command widgets and `BaseEmitter`
 Interactive widgets (`button`, `toggle`, `nav`) extend `BaseEmitter` (`src/app/component-interface.ts`), which carries `@Input() emit` and a single publish path `emitValue(value)` — it publishes to `{room}/io/{emit}` **and** feeds `IssueService.reportLocalState` (so auto-resolved issues can see console state). `BaseEmitter` uses `inject()` for its `ConnectorService`/`IssueService`, so subclasses don't thread deps through `super()`. Value semantics: toggle → boolean `status`, button → its `value` input (default `true`), nav → direction string. Some templates are SVGs (`nav.component.svg`, `transporterbuffer.component.svg`).

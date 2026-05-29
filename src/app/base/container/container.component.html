@@ -12,6 +12,7 @@
 
     <lcars-issues *ngSwitchCase="'issues'" [configuration]="configuration"></lcars-issues>
     <lcars-stats *ngSwitchCase="'stats'" [configuration]="configuration"></lcars-stats>
+    <lcars-panel *ngSwitchCase="'panel'" [configuration]="configuration"></lcars-panel>
     <lcars-nav *ngSwitchCase="'nav'" [emit]="configuration.emit"></lcars-nav>
     <lcars-button *ngSwitchCase="'button'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [value]="configuration.value" [emit]="configuration.emit"></lcars-button>
     <lcars-toggle *ngSwitchCase="'toggle'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-toggle>
