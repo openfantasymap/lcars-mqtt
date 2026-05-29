@@ -28,12 +28,15 @@ import { StatsComponent } from './base/stats/stats.component';
 import { ShipOverviewComponent } from './master/ship-overview/ship-overview.component';
 import { FormsModule } from '@angular/forms';
 import { ValuerendererComponent } from './valuerenderer/valuerenderer.component';
+import { environment } from '../environments/environment';
 
+// Broker connection comes from the environment; main.ts may override these
+// values at runtime from /assets/env.json before the app bootstraps.
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: 'mqtt.fantasymaps.org',
-  port: 9001,
-  path: '/ws',
-  protocol: "wss"
+  hostname: environment.mqtt.hostname,
+  port: environment.mqtt.port,
+  path: environment.mqtt.path,
+  protocol: environment.mqtt.protocol as 'ws' | 'wss'
 };
 
 

@@ -33,12 +33,12 @@ There is **no lint config** in this project (the platform CLAUDE.md mentions `fl
 ```
 
 - `Dockerfile`: multi-stage — Node 16 build (`--output-path=./dist/out`) → `nginx:alpine`.
-- `docker-entrypoint.sh`: at container start, dumps **all env vars to `assets/env.json`** via `jq` (runtime config injection pattern), then `nginx -g "daemon off;"`. Note: the app does not currently read `env.json` — the broker is hard-coded (see below).
+- `docker-entrypoint.sh`: at container start, dumps **all env vars to `assets/env.json`** via `jq`, then `nginx -g "daemon off;"`. `main.ts` reads this file at startup, so setting `MQTT_HOST`/`MQTT_PORT`/`MQTT_PATH`/`MQTT_PROTOCOL` (or `MQTT_URL`) as container env vars re-points the broker **without a rebuild**.
 - `nginx.conf`: SPA fallback (`try_files … /index.html`).
 
 ### Netlify (static)
 
-`netlify.toml` drives it: `npm run build` → publish `dist/lcars-mqtt`, with a `/* → /index.html` 200 redirect for the SPA routes and `NODE_VERSION = "16"` (pinned via `.nvmrc` too). Pure static — no runtime env injection (the MQTT broker is hard-coded in `app.module.ts`, so nothing is needed at request time). Connect the repo in the Netlify UI, or `netlify deploy --prod` with the CLI; settings are read from `netlify.toml`, no dashboard config required.
+`netlify.toml` drives it: `npm run build` → publish `dist/lcars-mqtt`, with a `/* → /index.html` 200 redirect for the SPA routes and `NODE_VERSION = "16"` (pinned via `.nvmrc` too). Static — the broker comes from `environment.prod.ts` (no container to inject `env.json`), so to point a Netlify deploy at a different broker, edit `src/environments/environment.prod.ts` (or the committed `src/assets/env.json` values) and redeploy. Connect the repo in the Netlify UI, or `netlify deploy --prod` with the CLI; settings are read from `netlify.toml`, no dashboard config required.
 
 ## Architecture — the parts that matter
 
@@ -92,7 +92,7 @@ LCARS colors are CSS custom properties `--main-color`, `--secondary-color`, `--t
 ## Gotchas
 
 - **`NO_ERRORS_SCHEMA` is enabled** in `AppModule`. Unknown elements/attributes (e.g. a mistyped `lcars-*` selector or `@Input` name) **fail silently** instead of erroring — double-check selector/binding names by hand.
-- **MQTT broker is hard-coded** in `MQTT_SERVICE_OPTIONS` (`app.module.ts`): `wss://mqtt.fantasymaps.org:9001/ws`. Change it there, not via env.
+- **MQTT broker config lives in `environment.*`** (`mqtt: {hostname, port, path, protocol}`), fed into `MQTT_SERVICE_OPTIONS` in `app.module.ts`. At runtime `main.ts` overrides it from `/assets/env.json` (keys `MQTT_HOST/PORT/PATH/PROTOCOL/URL`) **before bootstrap** — empty/missing values fall back to the environment defaults. Default broker: `wss://mqtt.fantasymaps.org:9001/ws`.
 - In `ConnectorService.connect()` the JSON-parse/`__topic`-tagging pipeline is **commented out**, so `MasterComponent` receives raw `IMqttMessage` objects (not parsed payloads). `setupConnectors()` does parse. Mind which path a stream came through.
 - `StationComponent.mode = "local"` but it still subscribes to MQTT regardless — local asset JSON is just the initial seed before live topics arrive.
 - All *layout* config is untyped (`any`) with no schema validation — malformed `form` payloads silently render nothing. (The **issue** layer is typed in `models/issue.ts`.)

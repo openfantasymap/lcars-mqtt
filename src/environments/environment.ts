@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // MQTT broker connection. Overridable at runtime via /assets/env.json
+  // (MQTT_HOST / MQTT_PORT / MQTT_PATH / MQTT_PROTOCOL) — see src/main.ts.
+  mqtt: {
+    hostname: 'mqtt.fantasymaps.org',
+    port: 9001,
+    path: '/ws',
+    protocol: 'wss'
+  }
 };
 
 /*
