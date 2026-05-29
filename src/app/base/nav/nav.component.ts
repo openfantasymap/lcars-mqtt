@@ -1,24 +1,24 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { ConnectorService } from '../../connector.service';
-import { CommandComponentInterface } from '../../component-interface';
+import { BaseEmitter } from '../../component-interface';
 
 @Component({
   selector: 'lcars-nav',
   templateUrl: './nav.component.svg',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit, CommandComponentInterface {
+export class NavComponent extends BaseEmitter implements OnInit {
 
   navDirection: EventEmitter<string> = new EventEmitter<string>();
-  constructor(
-    private c: ConnectorService
-  ) { }
+
+  constructor() {
+    super();
+  }
 
   ngOnInit(): void {
   }
 
-  nav(direction:string){
-    this.c.sendMessage('nav/direction', JSON.stringify({value:direction}));
+  nav(direction: string) {
+    this.emitValue(direction);
     this.navDirection.emit(direction);
   }
 

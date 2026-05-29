@@ -11,10 +11,12 @@
         ],
         "content": {
             "main": {
-                "type": "column", 
+                "type": "column",
                 "content" :[
+                    {"type": "issues"},
+                    {"type": "stats", "editable": true},
                     {
-                        "type": "row", 
+                        "type": "row",
                         "content": [
                             {"type": "nav", "emit": "nav/direction"},
                             {"type": "toggle", "label": "PROVA", "emit": "direct/toggle"},

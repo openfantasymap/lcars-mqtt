@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from '../connector.service';
+import { IssueService } from '../issue.service';
+import { ShipService } from '../ship.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -21,6 +23,8 @@ export class StationComponent implements OnInit {
 
   constructor(
     private c: ConnectorService,
+    private issues: IssueService,
+    private fleet: ShipService,
     private ar: ActivatedRoute
   ) { }
 
@@ -47,6 +51,10 @@ export class StationComponent implements OnInit {
       if(this.station){
         this.c.setStation(this.station);
         this.c.setupStation();
+      }
+      if(this.room && this.station){
+        this.issues.setup(this.room, this.station);
+        this.fleet.setup(this.room);
       }
     });
   }

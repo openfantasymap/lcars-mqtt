@@ -4,7 +4,7 @@ COPY package*.json /app/
 RUN npm ci
 COPY . /app
 ARG configuration=production
-RUN npm run build -- --outputPath=./dist/out --configuration $configuration
+RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
 
 

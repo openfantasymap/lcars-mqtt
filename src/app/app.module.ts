@@ -22,6 +22,10 @@ import { VsliderComponent } from './base/vslider/vslider.component';
 import { HsliderComponent } from './base/hslider/hslider.component';
 import { PersonnelComponent } from './base/personnel/personnel.component';
 import { MasterComponent } from './master/master.component';
+import { IssuesComponent } from './base/issues/issues.component';
+import { IssuesPanelComponent } from './master/issues-panel/issues-panel.component';
+import { StatsComponent } from './base/stats/stats.component';
+import { ShipOverviewComponent } from './master/ship-overview/ship-overview.component';
 import { FormsModule } from '@angular/forms';
 import { ValuerendererComponent } from './valuerenderer/valuerenderer.component';
 
@@ -52,7 +56,11 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     HsliderComponent,
     PersonnelComponent,
     MasterComponent,
-    ValuerendererComponent
+    ValuerendererComponent,
+    IssuesComponent,
+    IssuesPanelComponent,
+    StatsComponent,
+    ShipOverviewComponent
   ],
   imports: [
     BrowserModule,

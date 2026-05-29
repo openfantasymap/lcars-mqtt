@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from '../connector.service';
+import { IssueService } from '../issue.service';
+import { ShipService } from '../ship.service';
 import { ActivatedRoute } from '@angular/router';
 import { share } from 'rxjs';
 
@@ -20,6 +22,8 @@ export class MasterComponent implements OnInit {
 
   constructor(
     public c: ConnectorService,
+    public issues: IssueService,
+    public fleet: ShipService,
     private ar: ActivatedRoute
   ) { }
 
@@ -39,6 +43,8 @@ export class MasterComponent implements OnInit {
     if(this.room){
       this.c.setRoom(this.room);
       this.c.setupSettings();
+      this.issues.setup(this.room);
+      this.fleet.setup(this.room, true);
     }
   }
 

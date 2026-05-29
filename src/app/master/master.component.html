@@ -1,8 +1,18 @@
 <div class="lcars-bar horizontal">
     <div class="lcars-title left" [ngClass]="{'active':active==='main'}" (click)="active='main'">MAIN</div>
-    <div class="lcars-title left" [ngClass]="{'active':active==='ship'}" (click)="active='shipform'">SHIP</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='shipform'}" (click)="active='shipform'">SHIP</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='issues'}" (click)="active='issues'">ISSUES</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='overview'}" (click)="active='overview'">OVERVIEW</div>
     <div class="lcars-title left" [ngClass]="{'active':active==='ship'}" (click)="active='ship'">IO</div>
     <div class="lcars-title right">LCARS</div>
+</div>
+
+<div *ngIf="active==='issues'">
+    <lcars-issues-panel></lcars-issues-panel>
+</div>
+
+<div *ngIf="active==='overview'">
+    <lcars-ship-overview></lcars-ship-overview>
 </div>
 
 <div *ngIf="active==='main'">

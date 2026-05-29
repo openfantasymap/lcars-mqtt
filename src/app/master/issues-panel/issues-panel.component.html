@@ -1,0 +1,84 @@
+<div class="issues-panel">
+
+    <!-- LIVE BOARD -->
+    <div class="board">
+        <div class="section-title">Active Issues ({{open.length}})</div>
+        <div *ngIf="open.length === 0" class="muted">No active issues</div>
+
+        <div *ngFor="let i of open" class="row sev-{{i.severity}}">
+            <div class="meta">
+                <span class="title">{{i.title}}</span>
+                <span class="tag">{{i.target === BROADCAST ? 'CREW' : i.target}}</span>
+                <span class="tag">{{i.mode}}</span>
+                <span class="tag">{{i.severity}}</span>
+            </div>
+            <div class="desc">{{i.description}}</div>
+            <div class="actions">
+                <button (click)="resolve(i)">Resolve</button>
+                <button (click)="fail(i)">Fail</button>
+                <button (click)="cancel(i)">Cancel</button>
+            </div>
+        </div>
+
+        <div class="section-title" *ngIf="closed.length">History</div>
+        <div *ngFor="let i of closed" class="row closed">
+            <span class="title">{{i.title}}</span>
+            <span class="tag">{{i.status}}</span>
+            <span class="tag" *ngIf="i.resolvedBy">by {{i.resolvedBy}}</span>
+        </div>
+        <button *ngIf="closed.length" (click)="clear()">Clear history</button>
+    </div>
+
+    <!-- PRESET LIBRARY -->
+    <div class="presets">
+        <div class="section-title">Presets</div>
+        <div *ngIf="issues.presets.length === 0" class="muted">No presets loaded</div>
+        <button *ngFor="let p of issues.presets" (click)="loadPreset(p)">{{p.title}}</button>
+    </div>
+
+    <!-- AUTHORING -->
+    <div class="author">
+        <div class="section-title">New / Edit Issue</div>
+
+        <label>Title
+            <input [(ngModel)]="draft.title">
+        </label>
+        <label>Description
+            <textarea [(ngModel)]="draft.description" rows="2"></textarea>
+        </label>
+        <label>Target
+            <select [(ngModel)]="draft.target">
+                <option [value]="BROADCAST">Whole crew (broadcast)</option>
+                <option *ngFor="let s of stations" [value]="s">{{s}}</option>
+            </select>
+        </label>
+        <label>Resolution
+            <select [(ngModel)]="draft.mode">
+                <option value="manual">Manual (GM resolves)</option>
+                <option value="auto">Auto (condition)</option>
+            </select>
+        </label>
+        <label>Severity
+            <select [(ngModel)]="draft.severity">
+                <option value="info">Info</option>
+                <option value="yellow">Yellow</option>
+                <option value="red">Red</option>
+                <option value="black">Black</option>
+            </select>
+        </label>
+
+        <div class="cond" *ngIf="draft.mode === 'auto'">
+            <div class="section-title">Success condition</div>
+            <div class="hint">io topic = value (JSON). All must match. e.g. <code>direct/toggle = true</code></div>
+            <div *ngFor="let p of cond; let idx = index" class="cond-row">
+                <input placeholder="emit topic" [(ngModel)]="p.key">
+                <input placeholder="value" [(ngModel)]="p.value">
+                <button (click)="removeCond(idx)">x</button>
+            </div>
+            <button (click)="addCond()">+ condition</button>
+        </div>
+
+        <button class="create" (click)="create()">Inject issue</button>
+    </div>
+
+</div>

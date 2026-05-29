@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="configuration.type">
-    <div *ngSwitchCase="'row'" class="lcars-row"> 
+    <div *ngSwitchCase="'row'" class="lcars-row">
         <ng-container *ngFor="let c of configuration.content">
             <lcars-container [configuration]="c"></lcars-container>
         </ng-container>
@@ -10,8 +10,10 @@
         </ng-container>
     </div>
 
-    <lcars-nav *ngSwitchCase="'nav'"></lcars-nav>
-    <lcars-button *ngSwitchCase="'button'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-button>
+    <lcars-issues *ngSwitchCase="'issues'" [configuration]="configuration"></lcars-issues>
+    <lcars-stats *ngSwitchCase="'stats'" [configuration]="configuration"></lcars-stats>
+    <lcars-nav *ngSwitchCase="'nav'" [emit]="configuration.emit"></lcars-nav>
+    <lcars-button *ngSwitchCase="'button'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [value]="configuration.value" [emit]="configuration.emit"></lcars-button>
     <lcars-toggle *ngSwitchCase="'toggle'" [enabledMode]="configuration.mode" [enabled]="configuration.enabled" [text]="configuration.label" [emit]="configuration.emit"></lcars-toggle>
 
 </ng-container>

@@ -1,0 +1,20 @@
+# Netlify deploy config for the lcars-mqtt Angular app.
+# Static SPA: Netlify builds with the Angular CLI and serves dist/lcars-mqtt.
+
+[build]
+  command = "npm run build"
+  publish = "dist/lcars-mqtt"
+
+[build.environment]
+  # Angular 14 CLI supports Node ^14.15 || ^16.10; the build is verified on 16.
+  # If Netlify drops Node 16, switch to "18" and add
+  # NODE_OPTIONS = "--openssl-legacy-provider" to work around OpenSSL 3.
+  NODE_VERSION = "16"
+
+# SPA fallback: client-side routes like /lcars/:room/master must resolve to
+# index.html. Netlify serves real files (JS/CSS/assets) first, so this only
+# catches unmatched app routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

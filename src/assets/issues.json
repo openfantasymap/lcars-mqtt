@@ -1,0 +1,45 @@
+[
+  {
+    "id": "hull-breach",
+    "title": "Hull Breach",
+    "description": "Hull integrity failing on deck 7. Raise emergency force fields to seal the breach.",
+    "defaultTarget": "*",
+    "mode": "auto",
+    "severity": "red",
+    "condition": { "match": { "forcefields/emergency": true } }
+  },
+  {
+    "id": "sensor-ghost",
+    "title": "Sensor Ghost",
+    "description": "An unidentified contact flickers at the edge of long-range sensors. Recalibrate the array to confirm.",
+    "defaultTarget": "sensors/lrsensors",
+    "mode": "manual",
+    "severity": "yellow"
+  },
+  {
+    "id": "reroute-power",
+    "title": "Reroute Power",
+    "description": "Primary EPS conduit overloaded. Reroute power through the secondary grid.",
+    "defaultTarget": "*",
+    "mode": "auto",
+    "severity": "yellow",
+    "condition": { "match": { "power/eps-secondary": true } }
+  },
+  {
+    "id": "plot-course",
+    "title": "Plot a Course",
+    "description": "Helm, plot a heading to the rendezvous coordinates and engage.",
+    "defaultTarget": "nav/direction",
+    "mode": "auto",
+    "severity": "info",
+    "condition": { "match": { "nav/direction": "NE" } }
+  },
+  {
+    "id": "red-alert",
+    "title": "Battle Stations",
+    "description": "Hostile vessel decloaking off the port bow. All hands to battle stations, raise shields.",
+    "defaultTarget": "*",
+    "mode": "manual",
+    "severity": "red"
+  }
+]

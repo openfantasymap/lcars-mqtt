@@ -1,0 +1,16 @@
+[
+  {
+    "id": "uss-enterprise",
+    "name": "USS Enterprise",
+    "registry": "NCC-1701-G",
+    "alert": "default",
+    "stats": [
+      { "key": "hull", "label": "Hull Integrity", "value": 100, "max": 100, "unit": "%", "kind": "gauge" },
+      { "key": "shields", "label": "Shields", "value": 100, "max": 100, "unit": "%", "kind": "gauge" },
+      { "key": "power", "label": "Main Power", "value": 100, "max": 100, "unit": "%", "kind": "gauge" },
+      { "key": "lifesupport", "label": "Life Support", "value": 100, "max": 100, "unit": "%", "kind": "gauge" },
+      { "key": "warp", "label": "Warp Core", "value": "Online", "kind": "state" },
+      { "key": "sensors", "label": "Sensors", "value": "Nominal", "kind": "state" }
+    ]
+  }
+]

@@ -1,76 +1,102 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import {
-  IMqttMessage,
-  MqttModule,
-  IMqttServiceOptions,
-  MqttService
-} from 'ngx-mqtt';
-import { Observable, map, of, share, tap } from 'rxjs';
+import { IMqttMessage, MqttService } from 'ngx-mqtt';
+import { Observable, map, share, tap } from 'rxjs';
 
+/**
+ * Central MQTT gateway. All cross-component state and I/O flow through here.
+ * Everything is namespaced under `{room}/...`; see the generic helpers below.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectorService {
-  conditionChange: EventEmitter<any> = new EventEmitter<any>;
-  shipCondition(arg0: any) {
-    this._mqttService.unsafePublish(this.room+"/global", JSON.stringify(arg0));
-  }
-  sendSettings(settings: any) {
-    this._mqttService.unsafePublish(this.room+"/settings", JSON.stringify(settings));
-  }
-
-  mode: string|undefined = "mqtt";
-  room: string|undefined;
-  station: string|undefined;
+  mode: string | undefined = "mqtt";
+  room: string | undefined;
+  station: string | undefined;
 
   settings: any;
-  stationSettings:any;
+  stationSettings: any;
 
   settingsChange: EventEmitter<any> = new EventEmitter<any>();
   stationChange: EventEmitter<any> = new EventEmitter<any>();
-  connectorsChange: EventEmitter<string> = new EventEmitter<string>()
+  connectorsChange: EventEmitter<string> = new EventEmitter<string>();
+  conditionChange: EventEmitter<any> = new EventEmitter<any>();
 
   dataMap: any = {};
-  
 
   constructor(
     private _mqttService: MqttService,
     private h: HttpClient
   ) { }
 
-  setMode(mode:string){
+  // --- generic transport helpers (room-namespaced) --------------------------
+
+  /** Full topic for a room-relative sub-path. */
+  topicFor(sub: string): string {
+    return `${this.room}/${sub}`;
+  }
+
+  /** Publish a raw string payload to `{room}/{sub}`. */
+  publishRaw(sub: string, payload: string, opts?: any) {
+    this._mqttService.unsafePublish(this.topicFor(sub), payload, opts);
+  }
+
+  /** Publish a JSON-serialised object to `{room}/{sub}` (pass `{retain:true}` for a snapshot). */
+  publishJson(sub: string, obj: any, opts?: any) {
+    this.publishRaw(sub, JSON.stringify(obj), opts);
+  }
+
+  /** Observe `{room}/{sub}`, parsing each payload as JSON. */
+  observeJson<T = any>(sub: string): Observable<T> {
+    return this._mqttService.observe(this.topicFor(sub)).pipe(
+      map((m: IMqttMessage) => JSON.parse(m.payload.toString()) as T)
+    );
+  }
+
+  // --- session wiring -------------------------------------------------------
+
+  setMode(mode: string) {
     this.mode = mode;
   }
 
-  setRoom(room:string){
+  setRoom(room: string) {
     this.room = room;
   }
 
-  connectors(){
+  setStation(station: string) {
+    this.station = station;
+  }
+
+  connectors() {
     return Object.keys(this.dataMap);
   }
 
-  setupSettings(){
-    this.h.get('/assets/settings.json').subscribe(data=>{
+  shipCondition(arg0: any) {
+    this.publishJson('global', arg0);
+  }
+
+  sendSettings(settings: any) {
+    this.publishJson('settings', settings);
+  }
+
+  setupSettings() {
+    this.h.get('/assets/settings.json').subscribe(data => {
       this.settings = data;
       this.setupConnectors();
       this.settingsChange.emit(this.settings);
-    })
-    this._mqttService.observe(this.room+"/settings").pipe(map((x:IMqttMessage)=> {
-      this.settings = JSON.parse(x.payload.toString());
+    });
+    this.observeJson('settings').subscribe(data => {
+      this.settings = data;
       this.setupConnectors();
-      return this.settings;
-    })).subscribe(x => {
       this.settingsChange.emit(this.settings);
     });
-    this._mqttService.unsafePublish(this.room+"/connections", JSON.stringify({op: "connect"}), {qos: 1});
-    
+    this.publishJson('connections', { op: "connect" }, { qos: 1 });
   }
 
-  setupConnectors(){
-    for (let s of this.settings.sources){
-      this.dataMap[s] = this._mqttService.observe(this.room+'/io/'+s).pipe(map(x=>{
+  setupConnectors() {
+    for (let s of this.settings.sources) {
+      this.dataMap[s] = this._mqttService.observe(this.topicFor('io/' + s)).pipe(map(x => {
         let data = JSON.parse(x.payload.toString());
         data['__topic'] = x.topic;
         return data;
@@ -82,47 +108,37 @@ export class ConnectorService {
     console.debug(this.dataMap);
   }
 
-  connect(topic:string|unknown){
-    if(topic){
-      const stopic:string = <string>topic;
-      console.log(stopic);
-      if(Object.keys(this.dataMap).indexOf(stopic) >= 0)
-       return this.dataMap[stopic];
-      console.log(this.room+'/io/'+stopic);
-      const ret = this._mqttService.observe(this.room+'/io/'+stopic).pipe(share());/*map(x=>{
-        let data = JSON.parse(x.payload.toString());
-        data['__topic'] = x.topic;
-        return data;
-      }), tap(x => {
-        console.log(x);
-      }), share());*/
+  connect(topic: string | unknown) {
+    if (topic) {
+      const stopic: string = <string>topic;
+      if (Object.keys(this.dataMap).indexOf(stopic) >= 0)
+        return this.dataMap[stopic];
+      const ret = this._mqttService.observe(this.topicFor('io/' + stopic)).pipe(share());
       this.dataMap[stopic] = ret;
       this.connectorsChange.emit(stopic);
       return ret;
     }
   }
 
-  setStation(station:string){
-    this.station = station;
-  }
-
-  setupStation(){
-    this.h.get('/assets/default.json').subscribe(data=>{
+  setupStation() {
+    this.h.get('/assets/default.json').subscribe(data => {
       console.log(data);
       this.stationSettings = data;
       this.stationChange.emit(this.stationSettings);
     });
-    this._mqttService.observe(this.room+"/"+this.station+"/form").pipe(map((x:IMqttMessage)=> {
-      this.stationSettings = JSON.parse(x.payload.toString());
-      return this.stationSettings;
-    })).subscribe(x=>{
-      this.stationChange.emit(this.stationSettings );
+    this.observeJson(this.station + '/form').subscribe(data => {
+      this.stationSettings = data;
+      this.stationChange.emit(this.stationSettings);
     });
-    this._mqttService.unsafePublish(this.room+"/connections", JSON.stringify({op: "connect", station: this.station}), {qos: 1});
-
+    this.publishJson('connections', { op: "connect", station: this.station }, { qos: 1 });
   }
 
-  sendMessage(topic:string, message:string){
-    this._mqttService.unsafePublish(this.room+"/io/"+topic, message);
+  /** Publish a player's control value to `{room}/io/{emit}`, wrapped as {value} (see lcars-valuerenderer). */
+  publishIo(emit: string, value: any) {
+    this.publishJson('io/' + emit, { value });
+  }
+
+  sendMessage(topic: string, message: string) {
+    this.publishRaw('io/' + topic, message);
   }
 }
