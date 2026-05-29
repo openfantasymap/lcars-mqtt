@@ -44,7 +44,9 @@ export class StationComponent implements OnInit {
     });
     this.ar.paramMap.subscribe(d=>{
       this.room = d.get('room');
-      this.station = d.get('station');
+      // Station ids (roles / screen-registry keys) are lowercase; normalize so
+      // /lcars/:room/COMMS and /comms resolve the same layout and MQTT topics.
+      this.station = (d.get('station') || '').toLowerCase();
 
       if(this.room){
         this.c.setRoom(this.room);
