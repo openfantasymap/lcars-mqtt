@@ -1,0 +1,40 @@
+<div class="screen-editor">
+
+    <!-- SCREEN LIST -->
+    <div class="screens">
+        <div class="section-title">Screens</div>
+        <button *ngFor="let id of screens.ids()"
+                [ngClass]="{'active': id === selectedId}"
+                (click)="select(id)">{{id}}</button>
+        <div *ngIf="screens.ids().length === 0" class="muted">No screens yet</div>
+
+        <div class="new">
+            <input placeholder="new screen id" [(ngModel)]="newId">
+            <button (click)="create()">+ new</button>
+        </div>
+        <div class="hint">A player opens <code>/lcars/&lt;room&gt;/&lt;id&gt;</code></div>
+    </div>
+
+    <!-- JSON EDITOR -->
+    <div class="editor">
+        <div class="section-title">{{selectedId || 'Select a screen'}}</div>
+        <textarea [(ngModel)]="json" spellcheck="false"
+                  placeholder="Select or create a screen to edit its layout JSON"></textarea>
+        <div class="error" *ngIf="error">{{error}}</div>
+        <div class="actions">
+            <button class="save" (click)="save()" [disabled]="!selectedId">Save &amp; publish</button>
+            <button class="del" (click)="remove()" [disabled]="!selectedId">Delete</button>
+        </div>
+    </div>
+
+    <!-- COMPONENT PALETTE -->
+    <div class="palette">
+        <div class="section-title">Components</div>
+        <div class="hint">Mix &amp; match inside <code>structure.content.&lt;tab&gt;</code>:</div>
+        <div *ngFor="let p of palette" class="pal">
+            <div class="pal-type">{{p.type}}</div>
+            <code class="pal-hint">{{p.hint}}</code>
+        </div>
+    </div>
+
+</div>

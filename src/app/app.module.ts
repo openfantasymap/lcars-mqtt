@@ -27,6 +27,7 @@ import { IssuesPanelComponent } from './master/issues-panel/issues-panel.compone
 import { StatsComponent } from './base/stats/stats.component';
 import { PanelComponent } from './base/panel/panel.component';
 import { ShipOverviewComponent } from './master/ship-overview/ship-overview.component';
+import { ScreenEditorComponent } from './master/screen-editor/screen-editor.component';
 import { FormsModule } from '@angular/forms';
 import { ValuerendererComponent } from './valuerenderer/valuerenderer.component';
 import { environment } from '../environments/environment';
@@ -65,7 +66,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     IssuesPanelComponent,
     StatsComponent,
     PanelComponent,
-    ShipOverviewComponent
+    ShipOverviewComponent,
+    ScreenEditorComponent
   ],
   imports: [
     BrowserModule,

@@ -125,20 +125,36 @@ export class ConnectorService {
     }
   }
 
-  setupStation() {
-    // Seed the layout from the per-role registry, keyed by station id (e.g.
-    // 'comms', 'conn', 'engineering'), falling back to 'default'. The GM can
-    // still override any station's form live over MQTT below.
-    this.h.get<any>('/assets/stations.json').subscribe(data => {
-      const layout = data && (data[this.station as string] || data['default']);
-      if (layout) {
-        this.stationSettings = layout;
-        this.stationChange.emit(this.stationSettings);
-      }
-    });
-    this.observeJson(this.station + '/form').subscribe(data => {
-      this.stationSettings = data;
+  // Layout sources, in priority order (highest first): GM screen registry,
+  // per-station form push, asset seed.
+  private screenLayout: any;
+  private formLayout: any;
+  private seedLayout: any;
+
+  private emitLayout() {
+    const eff = this.screenLayout || this.formLayout || this.seedLayout;
+    if (eff) {
+      this.stationSettings = eff;
       this.stationChange.emit(this.stationSettings);
+    }
+  }
+
+  setupStation() {
+    // Asset seed from the built-in role layouts, keyed by station id (e.g.
+    // 'comms', 'conn', 'engineering'), falling back to 'default'.
+    this.h.get<any>('/assets/stations.json').subscribe(data => {
+      this.seedLayout = data && (data[this.station as string] || data['default']);
+      this.emitLayout();
+    });
+    // GM-authored screen registry (Master screen editor) — wins over the seed.
+    this.observeJson<any>('screens').subscribe(reg => {
+      this.screenLayout = reg && reg[this.station as string];
+      this.emitLayout();
+    });
+    // Legacy per-station form push — wins over the seed, below the registry.
+    this.observeJson(this.station + '/form').subscribe(data => {
+      this.formLayout = data;
+      this.emitLayout();
     });
     this.publishJson('connections', { op: "connect", station: this.station }, { qos: 1 });
   }

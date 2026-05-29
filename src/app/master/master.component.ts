@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConnectorService } from '../connector.service';
 import { IssueService } from '../issue.service';
 import { ShipService } from '../ship.service';
+import { ScreenService } from '../screen.service';
 import { ActivatedRoute } from '@angular/router';
 import { share } from 'rxjs';
 
@@ -24,6 +25,7 @@ export class MasterComponent implements OnInit {
     public c: ConnectorService,
     public issues: IssueService,
     public fleet: ShipService,
+    public screens: ScreenService,
     private ar: ActivatedRoute
   ) { }
 
@@ -45,6 +47,7 @@ export class MasterComponent implements OnInit {
       this.c.setupSettings();
       this.issues.setup(this.room);
       this.fleet.setup(this.room, true);
+      this.screens.setup(this.room);
     }
   }
 

@@ -3,8 +3,13 @@
     <div class="lcars-title left" [ngClass]="{'active':active==='shipform'}" (click)="active='shipform'">SHIP</div>
     <div class="lcars-title left" [ngClass]="{'active':active==='issues'}" (click)="active='issues'">ISSUES</div>
     <div class="lcars-title left" [ngClass]="{'active':active==='overview'}" (click)="active='overview'">OVERVIEW</div>
+    <div class="lcars-title left" [ngClass]="{'active':active==='screens'}" (click)="active='screens'">SCREENS</div>
     <div class="lcars-title left" [ngClass]="{'active':active==='ship'}" (click)="active='ship'">IO</div>
     <div class="lcars-title right">LCARS</div>
+</div>
+
+<div *ngIf="active==='screens'">
+    <lcars-screen-editor></lcars-screen-editor>
 </div>
 
 <div *ngIf="active==='issues'">
