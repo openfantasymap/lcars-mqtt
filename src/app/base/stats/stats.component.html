@@ -1,23 +1,18 @@
-<div class="ship-stats" *ngIf="ship">
-    <div class="ship-name">
-        <span class="name">{{ship.name}}</span>
-        <span class="reg" *ngIf="ship.registry">{{ship.registry}}</span>
-        <span class="alert alert-{{ship.alert}}" *ngIf="ship.alert && ship.alert !== 'default'">{{ship.alert}}</span>
-    </div>
-
-    <div *ngFor="let s of stats" class="stat">
-        <div class="stat-head">
-            <span class="label">{{s.label}}</span>
-            <span class="ctrl" *ngIf="canAct(s)">
-                <button (click)="adjust(s, -1)">&minus;</button>
-                <button (click)="adjust(s, 1)">+</button>
-            </span>
-            <span class="val">{{s.value}}{{s.unit}}</span>
-        </div>
-        <div *ngIf="s.max" class="bar">
-            <div class="fill" [style.width.%]="pct(s)"></div>
-        </div>
-    </div>
-</div>
-
-<div class="ship-stats empty" *ngIf="!ship">Awaiting telemetry…</div>
+@if (ship) {
+  <lcars-bar [title]="shipTitle" titleSide="right"></lcars-bar>
+  @for (s of stats; track s.key) {
+    @if (isNumeric(s)) {
+      <lcars-row centered>
+        <lcars-gauge [value]="num(s)" [label]="s.label" [unit]="s.unit || ''" size="sm"></lcars-gauge>
+        @if (editable) {
+          <button lcars-button shape="square" (click)="adjust(s, -1)">&minus;</button>
+          <button lcars-button shape="square" (click)="adjust(s, 1)">+</button>
+        }
+      </lcars-row>
+    } @else {
+      <lcars-readout [label]="s.label" [value]="s.value"></lcars-readout>
+    }
+  }
+} @else {
+  <lcars-readout label="Telemetry" value="awaiting…"></lcars-readout>
+}

@@ -1,90 +1,10 @@
-.ship-stats {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    color: #fff;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.ship-stats.empty {
-    color: #888;
-    font-style: italic;
-    padding: 0.5rem;
-}
-
-.ship-name {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-}
-
-.ship-name .name {
-    font-size: 140%;
-    font-weight: bold;
-}
-
-.ship-name .reg {
-    font-size: 90%;
-    opacity: 0.7;
-}
-
-.ship-name .alert {
-    margin-left: auto;
-    padding: 0 0.5rem;
-    border-radius: 0.6rem;
-    font-size: 85%;
-    color: #000;
-}
-
-.alert-yellow { background-color: #fc6; }
-.alert-red { background-color: #c44; color: #fff; }
-.alert-black { background-color: #a6f; color: #000; }
-
-.stat {
-    padding: 0.2rem 0.5rem;
-}
-
-.stat-head {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.stat-head .label {
-    text-transform: uppercase;
-    flex: 1;
-}
-
-.stat-head .val {
-    font-weight: bold;
-    min-width: 3rem;
-    text-align: right;
-}
-
-.stat-head .ctrl button {
-    cursor: pointer;
-    background-color: var(--secondary-color);
-    color: #000;
-    border: none;
-    border-radius: 0.6rem;
-    width: 1.6rem;
-    height: 1.6rem;
-    font-weight: bold;
-    margin-left: 0.15rem;
-}
-
-.bar {
-    margin-top: 0.15rem;
-    height: 0.5rem;
-    background-color: #222;
-    border-radius: 0.25rem;
-    overflow: hidden;
-}
-
-.bar .fill {
-    height: 100%;
-    background-color: var(--main-color);
-    transition: width 0.2s ease;
+lcars-row {
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.25rem 0;
 }

@@ -1,14 +1,16 @@
-<div class="lcars-issues">
-    <div class="lcars-issues-title">Active Directives</div>
+<lcars-bar title="Active Directives" titleSide="right"></lcars-bar>
 
-    <div *ngIf="open.length === 0" class="lcars-issue empty">No active directives</div>
+@if (open.length === 0) {
+  <lcars-readout value="No active directives"></lcars-readout>
+}
 
-    <div *ngFor="let i of open" class="lcars-issue sev-{{i.severity}}">
-        <div class="head">
-            <span class="title">{{i.title}}</span>
-            <span class="badge">{{i.mode === 'auto' ? 'AUTO' : 'GM'}}</span>
-        </div>
-        <div class="desc">{{i.description}}</div>
-        <div class="foot">{{i.mode === 'auto' ? 'Resolves when conditions are met' : 'Awaiting GM confirmation'}}</div>
-    </div>
-</div>
+@for (i of open; track i.id) {
+  <lcars-panel>
+    <lcars-row spaceBetween>
+      <lcars-readout [label]="i.title" [color]="severityColor(i)"></lcars-readout>
+      <lcars-indicator [state]="severityState(i)" [label]="i.mode === 'auto' ? 'AUTO' : 'GM'"></lcars-indicator>
+    </lcars-row>
+    <lcars-textbox>{{ i.description }}</lcars-textbox>
+    <lcars-textbox textColor="muted">{{ i.mode === 'auto' ? 'Resolves when conditions are met' : 'Awaiting GM confirmation' }}</lcars-textbox>
+  </lcars-panel>
+}
