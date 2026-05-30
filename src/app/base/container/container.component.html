@@ -53,7 +53,7 @@
     <lcars-bargraph [values]="configuration.values || []" [live]="!!configuration.live"></lcars-bargraph>
   }
   @case ('compass') {
-    <lcars-compass [heading]="num()" [color]="configuration.color || 'secondary'"></lcars-compass>
+    <lcars-compass [heading]="num()" [size]="configuration.size || '13rem'" [color]="configuration.color || 'secondary'"></lcars-compass>
   }
   @case ('helm') {
     <lcars-helm [warp]="+(configuration.warp || 0)" [impulse]="+(configuration.impulse || 0)" [throttle]="+(configuration.throttle || 0)"></lcars-helm>

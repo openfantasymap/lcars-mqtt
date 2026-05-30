@@ -1,24 +1,42 @@
-<lcars-app>
-  <header lcars-app-header>
-    <lcars-bar [title]="title || ''" titleSide="right" fill></lcars-bar>
-  </header>
+@switch (layout) {
 
-  <nav lcars-app-sidebar>
-    <lcars-nav>
-      @for (c of sidebar; track $index) {
-        <button lcars-nav-item [active]="active === c.target?.tab" (click)="do(c.target)">
-          {{ c.target?.label }}
-        </button>
-      }
-    </lcars-nav>
-  </nav>
+  @case ('frame') {
+    <div class="lcars-frame frame-bracket">
+      <div class="fr-elbow-top"><lcars-elbow corner="left-bottom" color="primary"></lcars-elbow></div>
+      <header class="fr-header"><lcars-bar [fill]="true" [cap]="'right'" [title]="title || ''" titleSide="right" color="primary"></lcars-bar></header>
+      <nav class="fr-sidebar">
+        <lcars-nav>
+          @for (c of sidebar; track $index) {
+            <button lcars-nav-item [active]="active === c.target?.tab" (click)="do(c.target)">{{ c.target?.label }}</button>
+          }
+        </lcars-nav>
+      </nav>
+      <main class="fr-content">
+        @for (r of contentEntries; track r.key) {
+          @if (active === r.key) { <lcars-container [configuration]="r.value"></lcars-container> }
+        }
+      </main>
+      <div class="fr-elbow-bot"><lcars-elbow corner="left-top" color="primary"></lcars-elbow></div>
+      <footer class="fr-footer"><lcars-bar [fill]="true" [cap]="'right'" [title]="footer || ''" titleSide="left" color="primary"></lcars-bar></footer>
+    </div>
+  }
 
-  <main lcars-app-content>
-    @for (r of contentEntries; track r.key) {
-      @if (active === r.key) {
-        <lcars-container [configuration]="r.value"></lcars-container>
-      }
-    }
-    <lcars-bar [title]="footer || ''" titleSide="left"></lcars-bar>
-  </main>
-</lcars-app>
+  @default {
+    <div class="lcars-frame frame-sidebar">
+      <div class="fr-elbow-top"><lcars-elbow corner="left-bottom" color="primary"></lcars-elbow></div>
+      <header class="fr-header"><lcars-bar [fill]="true" [cap]="'right'" [title]="title || ''" titleSide="right" color="primary"></lcars-bar></header>
+      <nav class="fr-sidebar">
+        <lcars-nav>
+          @for (c of sidebar; track $index) {
+            <button lcars-nav-item [active]="active === c.target?.tab" (click)="do(c.target)">{{ c.target?.label }}</button>
+          }
+        </lcars-nav>
+      </nav>
+      <main class="fr-content">
+        @for (r of contentEntries; track r.key) {
+          @if (active === r.key) { <lcars-container [configuration]="r.value"></lcars-container> }
+        }
+      </main>
+    </div>
+  }
+}

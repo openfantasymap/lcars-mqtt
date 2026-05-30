@@ -1,0 +1,70 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.lcars-frame {
+  display: grid;
+  min-height: 100vh;
+  height: 100%;
+  gap: var(--lcars-gap, 0.25rem);
+  padding: var(--lcars-gap, 0.25rem);
+  box-sizing: border-box;
+  background: var(--lcars-bg, #000);
+}
+
+/* sidebar: top elbow + top bar / left rail + content */
+.frame-sidebar {
+  grid-template-columns: 9.5rem 1fr;
+  grid-template-rows: 4.5rem 1fr;
+  grid-template-areas:
+    "elbowtop header"
+    "sidebar  content";
+}
+
+/* frame: full left bracket — adds a bottom elbow + bottom bar */
+.frame-bracket {
+  grid-template-columns: 9.5rem 1fr;
+  grid-template-rows: 4.5rem 1fr 4.5rem;
+  grid-template-areas:
+    "elbowtop header"
+    "sidebar  content"
+    "elbowbot footer";
+}
+
+.fr-elbow-top { grid-area: elbowtop; }
+.fr-elbow-bot { grid-area: elbowbot; }
+.fr-header { grid-area: header; display: flex; align-items: flex-start; }
+.fr-footer { grid-area: footer; display: flex; align-items: flex-end; }
+.fr-sidebar { grid-area: sidebar; }
+.fr-content { grid-area: content; overflow: auto; padding-left: 0.25rem; }
+
+/* elbows fill their cell */
+.fr-elbow-top lcars-elbow,
+.fr-elbow-bot lcars-elbow {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* top/bottom bars: a single sweep aligned with the elbow arm (1.5rem) */
+.fr-header lcars-bar,
+.fr-footer lcars-bar {
+  flex: 1;
+  height: var(--lcars-bar-thickness, 1.5rem);
+}
+
+/* left nav rail: flush blocks under the elbow trunk (7.5rem) form a continuous rail */
+.fr-sidebar lcars-nav {
+  width: 7.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.25rem;
+}
+.fr-sidebar button {
+  width: 100%;
+  border-radius: 0;
+  min-height: 3rem;
+}

@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
-  LcarsAppComponent,
-  LcarsAppHeaderDirective,
-  LcarsAppSidebarDirective,
-  LcarsAppContentDirective,
+  LcarsElbowComponent,
   LcarsBarComponent,
   LcarsNavComponent,
   LcarsNavItemComponent
@@ -12,16 +9,15 @@ import { ConnectorService } from '../connector.service';
 import { ContainerComponent } from '../base/container/container.component';
 
 /**
- * LCARS app shell: header bar (title), sidebar tab rail, and the active tab's
- * content rendered through the recursive container. Built on lcars-ngx layout.
+ * LCARS chrome. Two frame layouts (selected by `configuration.layout`):
+ *  - 'sidebar' (default): top-left elbow + top bar + left nav rail + content.
+ *  - 'frame': full left bracket — top elbow+bar, left rail, bottom elbow+bar.
+ * Built from lcars-ngx primitives (elbow/bar/nav); content via the container.
  */
 @Component({
   selector: 'lcars-interface',
   imports: [
-    LcarsAppComponent,
-    LcarsAppHeaderDirective,
-    LcarsAppSidebarDirective,
-    LcarsAppContentDirective,
+    LcarsElbowComponent,
     LcarsBarComponent,
     LcarsNavComponent,
     LcarsNavItemComponent,
@@ -52,6 +48,11 @@ export class InterfaceComponent implements OnInit {
     if (tgt && tgt.type === 'tab') {
       this.active = tgt.tab;
     }
+  }
+
+  /** Chrome layout: 'sidebar' (default) or 'frame'. */
+  get layout(): string {
+    return (this.configuration && this.configuration.layout) || 'sidebar';
   }
 
   get sidebar(): any[] {

@@ -53,13 +53,13 @@
         "main": {"type": "column", "content": [
           {"type": "panel", "title": "Helm Control", "content": [
             {"type": "row", "content": [
-              {"type": "compass", "value": 45, "source": "conn/heading"},
-              {"type": "column", "content": [
-                {"type": "readout", "label": "Heading", "value": "045 MARK 2"},
-                {"type": "readout", "label": "Velocity", "value": "Warp 6", "source": "conn/speed"},
-                {"type": "nav", "emit": "conn/heading"}
-              ]},
-              {"type": "helm", "warp": 6, "impulse": 4, "throttle": 70}
+              {"type": "readout", "label": "Heading", "value": "045 MARK 2"},
+              {"type": "readout", "label": "Velocity", "value": "Warp 6", "source": "conn/speed"},
+              {"type": "readout", "label": "Course", "value": "Bearing 042"}
+            ]},
+            {"type": "helm", "warp": 6, "impulse": 4, "throttle": 70},
+            {"type": "row", "content": [
+              {"type": "nav", "emit": "conn/heading"}
             ]}
           ]},
           {"type": "row", "content": [
@@ -114,6 +114,7 @@
   "bridge": {
     "title": "BRIDGE",
     "footer": "NCC-1701-G",
+    "layout": "frame",
     "structure": {
       "sidebar": [
         {"type": "button", "height": 1, "target": {"type": "tab", "tab": "main", "label": "Command"}}
