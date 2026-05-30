@@ -1,42 +1,74 @@
 @switch (configuration.type) {
+
+  <!-- structural -->
   @case ('row') {
-    <lcars-row [fill]="!!configuration.fill">
-      @for (c of configuration.content; track $index) {
-        <lcars-container [configuration]="c"></lcars-container>
-      }
+    <lcars-row [fill]="!!configuration.fill" [wrap]="!!configuration.wrap">
+      @for (c of configuration.content; track $index) { <lcars-container [configuration]="c"></lcars-container> }
     </lcars-row>
   }
   @case ('column') {
     <lcars-column [fill]="!!configuration.fill">
-      @for (c of configuration.content; track $index) {
-        <lcars-container [configuration]="c"></lcars-container>
-      }
+      @for (c of configuration.content; track $index) { <lcars-container [configuration]="c"></lcars-container> }
     </lcars-column>
   }
   @case ('panel') {
     <lcars-panel>
-      <lcars-textbox size="big">{{ configuration.title }}</lcars-textbox>
-      @if (configuration.note) {
-        <lcars-textbox textColor="muted">{{ configuration.note }}</lcars-textbox>
-      }
+      <lcars-bar [title]="configuration.title || ''" titleSide="right" [color]="configuration.color || 'primary'"></lcars-bar>
+      @for (c of configuration.content; track $index) { <lcars-container [configuration]="c"></lcars-container> }
+      @if (configuration.note) { <lcars-textbox textColor="muted">{{ configuration.note }}</lcars-textbox> }
     </lcars-panel>
   }
+  @case ('bar') {
+    <lcars-bar [title]="configuration.title || ''" [titleSide]="configuration.titleSide || 'right'" [color]="configuration.color || 'primary'" [fill]="!!configuration.fill"></lcars-bar>
+  }
+  @case ('text') {
+    <lcars-textbox [size]="configuration.size || 'default'" [textColor]="configuration.color">{{ configuration.label }}</lcars-textbox>
+  }
+
+  <!-- command (publish to MQTT) -->
   @case ('button') {
-    <button lcars-button (click)="emit(configuration)">{{ configuration.label }}</button>
+    <button lcars-button [class]="''" (click)="emit(configuration)">{{ configuration.label }}</button>
   }
   @case ('toggle') {
-    <lcars-toggle
-      [label]="configuration.label || ''"
-      [checked]="toggleState(configuration)"
-      (checkedChange)="emitToggle(configuration, $event)"></lcars-toggle>
+    <lcars-toggle [label]="configuration.label || ''" [checked]="toggleState(configuration)" (checkedChange)="emitToggle(configuration, $event)"></lcars-toggle>
   }
   @case ('nav') {
     <app-dpad [emit]="configuration.emit"></app-dpad>
   }
-  @case ('issues') {
-    <lcars-issues></lcars-issues>
+
+  <!-- display (live io value via `source`, else static `value`) -->
+  @case ('gauge') {
+    <lcars-gauge [value]="num()" [label]="configuration.label || ''" [unit]="configuration.unit ?? '%'" [size]="configuration.size || 'default'" [color]="configuration.color || 'primary'"></lcars-gauge>
   }
-  @case ('stats') {
-    <lcars-stats [configuration]="configuration"></lcars-stats>
+  @case ('readout') {
+    <lcars-readout [label]="configuration.label || ''" [value]="str()" [color]="configuration.color"></lcars-readout>
   }
+  @case ('indicator') {
+    <lcars-indicator [state]="configuration.state || 'online'" [label]="configuration.label || ''"></lcars-indicator>
+  }
+  @case ('slider') {
+    <lcars-slider [value]="num()" [showValue]="true" [color]="configuration.color || 'primary'"></lcars-slider>
+  }
+  @case ('bargraph') {
+    <lcars-bargraph [values]="configuration.values || []" [live]="!!configuration.live"></lcars-bargraph>
+  }
+  @case ('compass') {
+    <lcars-compass [heading]="num()" [color]="configuration.color || 'secondary'"></lcars-compass>
+  }
+  @case ('helm') {
+    <lcars-helm [warp]="+(configuration.warp || 0)" [impulse]="+(configuration.impulse || 0)" [throttle]="+(configuration.throttle || 0)"></lcars-helm>
+  }
+  @case ('warpcore') {
+    <lcars-warpcore [state]="configuration.state || 'running'" [orientation]="configuration.orientation || 'vertical'"></lcars-warpcore>
+  }
+  @case ('power') {
+    <lcars-power-row [label]="configuration.label || ''" [value]="num()" [state]="configuration.state || 'nominal'" [display]="configuration.display || ''"></lcars-power-row>
+  }
+  @case ('alert') {
+    <lcars-alert [condition]="configuration.condition || 'red'" [text]="configuration.label || ''" [flash]="!!configuration.flash"></lcars-alert>
+  }
+
+  <!-- app domain widgets -->
+  @case ('issues') { <lcars-issues></lcars-issues> }
+  @case ('stats') { <lcars-stats [configuration]="configuration"></lcars-stats> }
 }
